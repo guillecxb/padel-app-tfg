@@ -1,0 +1,20 @@
+{
+  "login": {
+    "required": "Seu nome de usuário deve ser fornecido"
+  },
+  "password": {
+    "required": "Sua senha deve ser fornecida"
+  },
+  "validations": {
+    "nameRequired": "O nome é obrigatório",
+    "passwordRequired": "A senha é obrigatória",
+    "field-required": "{{field}} é um campo obrigatório",
+    "field-already-taken": "{{field}} já está em uso",
+    "field-invalid": "{{field}} não é válido",
+    "field-email-invalid": "Por favor, forneça um endereço de e-mail com o formato correto",
+    "field-max-length": "{{field}} deve ter menos de {{count}} caracteres",
+    "field-min-length": "{{field}} deve ter pelo menos {{count}} caracteres",
+    "field-integer-greater-than": "{{field}} deve ser pelo menos {{limit}}",
+    "async-error": "Erro do servidor ao validar {{field}}: {{message}}"
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "users": "v1",
+  "customers": "v2",
+  "languages": "v1",
+  "settings": "v1",
+  "health": "v1",
+  "vas": "v1",
+  "connectivity": "v1",
+  "order": "v1",
+  "auditory": "v1",
+  "commands": "v1",
+  "location": "v1",
+  "service": "v1"
+}

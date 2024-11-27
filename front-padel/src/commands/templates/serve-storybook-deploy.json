@@ -1,0 +1,12 @@
+{
+  "public": "deploy-storybook/public",
+  "trailingSlash": false,
+  "directoryListing": false,
+  "cleanUrls": false,
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.html"
+    }
+  ]
+}

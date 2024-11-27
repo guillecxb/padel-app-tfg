@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkpadel_app=self.webpackChunkpadel_app||[]).push([[750],{50750:e=>{e.exports=JSON.parse('{"headerTitle":"Operators","table":{"id":"Operator ID","name":"Operator name","type":"Type","lastConnection":"Last connection","credentialStatus":"Credential status"},"add":"Add operator","totalOperators":"Total operators: {{count}}"}')}}]);

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkpadel_app=self.webpackChunkpadel_app||[]).push([[6490],{26490:e=>{e.exports=JSON.parse('{"title":"Not\xedcias de Padel","selectDate":"Selecionar data a partir de","newerNews":"Not\xedcias mais recentes","olderNews":"Not\xedcias mais antigas"}')}}]);

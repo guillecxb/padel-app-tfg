@@ -1,0 +1,351 @@
+{
+  "root": true,
+  "env": {
+    "browser": true,
+    "node": true,
+    "jest": true,
+    "es6": true
+  },
+  "parser": "@babel/eslint-parser",
+  "parserOptions": {
+    "babelOptions": {
+      "presets": ["@babel/preset-react"]
+    }
+  },
+  "plugins": [
+    "@babel",
+    "prettier",
+    "cypress",
+    "react",
+    "react-hooks",
+    "filenames",
+    "boundaries",
+    "no-only-tests",
+    "deprecate",
+    "local-rules",
+    "json",
+    "import"
+  ],
+  "extends": [
+    "plugin:react/jsx-runtime",
+    "plugin:react/recommended",
+    "prettier",
+    "jest-enzyme",
+    "plugin:boundaries/strict",
+    "plugin:import/recommended"
+  ],
+  "settings": {
+    "react": {
+      "pragma": "React",
+      "version": "detect"
+    },
+    "import/resolver": {
+      "node": {
+        "paths": ["src"],
+        "node": {
+          "extensions": [".js", ".jsx"]
+        }
+      }
+    },
+    "boundaries/elements": [
+      {
+        "type": "stories",
+        "pattern": "stories/**",
+        "mode": "folder",
+        "capture": ["category"]
+      },
+      {
+        "type": "components",
+        "pattern": "components/{atoms,molecules,organisms,templates}/**",
+        "mode": "folder",
+        "capture": ["category"]
+      },
+      {
+        "type": "modules",
+        "pattern": "modules/**",
+        "mode": "folder",
+        "capture": ["category"]
+      },
+      {
+        "type": "domain",
+        "pattern": "domain/**",
+        "mode": "folder",
+        "capture": ["category"]
+      },
+      {
+        "type": "custom",
+        "pattern": "custom/**",
+        "mode": "folder",
+        "capture": ["category"]
+      },
+      {
+        "type": "pages",
+        "pattern": "pages/*.js",
+        "mode": "file"
+      },
+      {
+        "type": "translations",
+        "pattern": "translations/**",
+        "mode": "folder",
+        "capture": ["category"]
+      },
+      {
+        "type": "root",
+        "pattern": "src/*.*",
+        "mode": "file"
+      }
+    ],
+    "boundaries/ignore": [
+      "*.json",
+      "*.js",
+      "src/index.js",
+      "src/setupTests.js",
+      "mocks/**/*.js",
+      "mocks-legacy/**/*.js",
+      "cypress/**/*.js",
+      ".storybook/**/*.js",
+      "eslint-local-rules/**/*.js",
+      "commands/**/*.js",
+      "src/**/*.stories.js",
+      "src/support/**/*.js",
+      "**/*.json"
+    ]
+  },
+  "rules": {
+    "boundaries/element-types": [
+      2,
+      {
+        "default": "disallow",
+        "rules": [
+          {
+            "from": "domain",
+            "allow": ["domain"]
+          },
+          {
+            "from": "modules",
+            "allow": ["domain", "components", "translations"]
+          },
+          {
+            "from": "pages",
+            "allow": ["domain", "components", "modules", "translations"]
+          },
+          {
+            "from": "stories",
+            "allow": ["components", "modules", "translations"]
+          },
+          {
+            "from": "root",
+            "allow": ["custom", "root", "pages", "domain", "components", "modules", "translations"]
+          },
+          {
+            "from": "custom",
+            "allow": ["domain", "modules"]
+          },
+          {
+            "from": [["components", { "category": "templates" }]],
+            "allow": [
+              ["components", { "category": "atoms" }],
+              ["components", { "category": "molecules" }],
+              ["components", { "category": "organisms" }]
+            ]
+          },
+          {
+            "from": [["components", { "category": "organisms" }]],
+            "allow": [
+              ["components", { "category": "molecules" }],
+              ["components", { "category": "atoms" }]
+            ]
+          },
+          {
+            "from": [["components", { "category": "molecules" }]],
+            "allow": [["components", { "category": "atoms" }]]
+          }
+        ]
+      }
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "printWidth": 99,
+        "parser": "flow"
+      }
+    ],
+    "react/jsx-uses-react": [0],
+    "react/react-in-jsx-scope": [0],
+    "sort-keys": [0],
+    "no-undef": [2],
+    "no-unused-vars": [
+      2,
+      { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }
+    ],
+    "react/prop-types": 2,
+    "react/no-multi-comp": [2, { "ignoreStateless": false }],
+    "react/no-deprecated": [2],
+    "react/no-access-state-in-setstate": [2],
+    "react/no-did-mount-set-state": [2],
+    "react/no-typos": [2],
+    "react/sort-prop-types": [0],
+    "react/jsx-sort-props": [2],
+    "react/jsx-no-bind": [0],
+    "react-hooks/rules-of-hooks": [2],
+    "react-hooks/exhaustive-deps": [2],
+    "filenames/match-regex": [0],
+    "filenames/match-exported": [0, "pascal"],
+    "filenames/no-index": [0],
+    "boundaries/no-private": [0],
+    "no-only-tests/no-only-tests": [2],
+    "deprecate/function": [2],
+    "deprecate/member-expression": [
+      2,
+      "cy.waitUntil",
+      "cy.waitUntilCheck",
+      "cy.waitLongUntilCheck",
+      "cy.wait"
+    ],
+    "deprecate/import": [2],
+    "json/*": [2],
+    "import/no-duplicates": [2],
+    "import/no-absolute-path": [2],
+    "import/no-self-import": [2],
+    "import/no-cycle": [2],
+    "import/no-mutable-exports": [2],
+    "import/first": [2],
+    "import/newline-after-import": [2],
+    "import/prefer-default-export": [0],
+    "import/order": [
+      2,
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          "parent",
+          ["sibling", "index"]
+        ],
+        "pathGroups": [
+          {
+            "pattern": "domain/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "modules/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "components/templates/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "components/organisms/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "components/molecules/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "components/atoms/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "cypress/support/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "cypress/bases/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "cypress/pages/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "cypress/modules/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "cypress/components/**",
+            "group": "internal",
+            "position": "before"
+          },
+          {
+            "pattern": "@(react|prop-types)",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "@storybook/**",
+            "group": "external",
+            "position": "before"
+          },
+          {
+            "pattern": "@mui/**",
+            "group": "external",
+            "position": "after"
+          },
+          {
+            "pattern": "styled-components",
+            "group": "external",
+            "position": "after"
+          }
+        ],
+        "newlines-between": "always",
+        "pathGroupsExcludedImportTypes": ["builtin"]
+      }
+    ]
+  },
+  "overrides": [
+    {
+      "files": "src/**/*.js",
+      "rules": {
+        "no-console": [2]
+      }
+    },
+    {
+      "files": [
+        ".storybook/**/*.js",
+        "cypress/support/api/**/*.js",
+        "domain/*.js",
+        "src/**/helpers/**/*.js",
+        "src/**/helpers.js",
+        "src/**/use*.js"
+      ],
+      "rules": {
+        "import/prefer-default-export": [0]
+      }
+    },
+    {
+      "files": ["src/components/**/*.stories.*", ".storybook/**/*.js"],
+      "rules": {
+        "import/prefer-default-export": [0],
+        "react/prop-types": "off",
+        "react/no-multi-comp": "off",
+        "react/jsx-no-bind": "off",
+        "react-hooks/rules-of-hooks": "off"
+      }
+    },
+    {
+      "files": ["src/**/*.test.js"],
+      "rules": {
+        "boundaries/entry-point": "off",
+        "boundaries/no-ignored": "off"
+      }
+    },
+    {
+      "files": [".eslintrc.json"],
+      "rules": {
+        "boundaries/no-unknown-files": "off"
+      }
+    }
+  ]
+}

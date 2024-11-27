@@ -1,0 +1,26 @@
+# vscode configuration directories
+**/.vscode/*
+
+# Local .terraform directories
+**/.terraform/*
+
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# .retry ansible files
+*.retry
+
+# lambda zips
+magnet_sdwan_*.zip
+
+#workspace info
+.idea/*
+
+# Root package-lock due to running npm i command in wrong folder
+/package-lock.json
+
+# DS_Store files
+*.DS_Store
+

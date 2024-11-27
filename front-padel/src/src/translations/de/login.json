@@ -1,0 +1,15 @@
+{
+  "welcome": "Willkommen bei der Padel-App",
+  "pleaseSign": "Bitte melden Sie sich bei Ihrem Konto an:",
+  "username": "Benutzername",
+  "password": "Passwort",
+  "remember": "Konto merken",
+  "forgot": "Passwort vergessen?",
+  "forgotTittle": "Passwort vergessen",
+  "sign": "Anmelden",
+  "serviceUnavailable": "Dienst nicht verfügbar",
+  "forgotMessage": "Wenn Sie Ihr Passwort zurücksetzen möchten, wenden Sie sich bitte an Ihren IT-Operator.",
+  "forgotContact": "Kontakt: ",
+  "confirm": "Verstanden"
+}
+

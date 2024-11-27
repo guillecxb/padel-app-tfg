@@ -1,0 +1,12 @@
+{
+  "headerTitle": "Operators",
+  "table": {
+    "id": "Operator ID",
+    "name": "Operator name",
+    "type": "Type",
+    "lastConnection": "Last connection",
+    "credentialStatus": "Credential status"
+  },
+  "add": "Add operator",
+  "totalOperators": "Total operators: {{count}}"
+}

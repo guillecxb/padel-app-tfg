@@ -1,0 +1,80 @@
+{
+  "breadcrumbsMain": "Operadores",
+  "breadcrumbNew": "Novo operador",
+  "editUserSubtitle": "Preencha os novos campos para este usuário.",
+  "breadcrumbEdit": "Editar usuário operador",
+  "breadcrumbView": "Visualizar usuário",
+  "title": "Novo operador",
+  "editTitle": "Editar usuário operador",
+  "addNew": "Adicionar novo operador",
+  "editUser": "Editar operador",
+  "edit365": "Editar operador",
+  "userPassDescription": "Crie um nome de usuário e uma senha para o novo usuário. Você também pode gerar uma senha automática clicando no botão gerar senha. Lembre-se de copiar e enviar as credenciais para o operador após este processo.",
+  "editUserLabel": "ID do Usuário: {{userId}}",
+  "saveChanges": "Salvar alterações",
+  "fields": {
+    "name": "Nome",
+    "label": "Etiqueta",
+    "username": "Nome de usuário",
+    "usernameHelper": "Deve ter pelo menos 5 caracteres.",
+    "password": "Senha",
+    "passwordHelper": "Deve ter pelo menos 8 caracteres, uma letra maiúscula, um número e um símbolo !%*#?&.",
+    "operator": "Tipo de operador"
+  },
+  "validations": {
+    "nameRequired": "O nome é obrigatório",
+    "passwordRequired": "A senha é obrigatória"
+  },
+  "types": {
+    "credentials": "Conta de login e senha"
+  },
+  "form": {
+    "passwordError": "Senha inválida. Deve ter pelo menos 8 caracteres, uma letra maiúscula, um número e um símbolo !%*#?&.",
+    "operatorError": "O tipo de operador deve ser selecionado",
+    "alreadyExists": "O login já existe, por favor tente outro",
+    "errorOnCreate": "O usuário não pôde ser criado devido a um erro interno. Por favor, tente novamente",
+    "errorOnEdit": "O usuário não pôde ser editado devido a um erro interno. Por favor, tente novamente",
+    "submit": "Criar",
+    "save": "Salvar",
+    "cancel": "Cancelar",
+    "copy": "Copiar",
+    "exit": "Sair do processo",
+    "generatePass": "Gerar senha",
+    "refreshPass": "Atualizar senha",
+    "generatedPass": "Nova senha gerada!",
+    "usernameCopied": "Nome de usuário copiado!",
+    "passwordCopied": "Senha copiada!",
+    "linkCopied": "Link copiado!",
+    "linkGenerated": "Link gerado!"
+  },
+  "operators": {
+    "operator": "Atendimento ao cliente",
+    "deployOperator": "Implantador de serviço"
+  },
+  "operator": {
+    "editUser": "Editar operador",
+    "viewUser": "Visualizar usuário",
+    "viewUserDetails": "Detalhes do usuário"
+  },
+  "customer": {
+    "breadcrumb": {
+      "main": "Usuários",
+      "new": "Adicionar usuário",
+      "edit": "Editar usuário"
+    },
+    "addDescription": "Crie um nome de usuário e uma senha para o novo usuário. Você também pode gerar uma senha automática clicando no botão gerar senha. Lembre-se de copiar e enviar as credenciais para o usuário após este processo.",
+    "addUser": "Adicionar usuário",
+    "newUser": "Novo usuário",
+    "editUser": "Editar usuário",
+    "viewUser": "Visualizar usuário",
+    "viewUserDetails": "Detalhes do usuário",
+    "deleteModal": {
+      "title": "Excluir conta do usuário",
+      "message": "Tem certeza de que deseja excluir o usuário {{userId}}?",
+      "messageOwner": "Tem certeza de que deseja excluir sua própria conta?",
+      "warning": "Excluir esta conta removerá todas as informações deste usuário. Esta ação não pode ser desfeita.",
+      "cancel": "Cancelar",
+      "delete": "Excluir"
+    }
+  }
+}

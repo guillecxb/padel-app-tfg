@@ -1,0 +1,27 @@
+{
+  "breadcrumbsMain": "Clientes",
+  "breadcrumbView": "Nuevo cliente",
+  "title": "General",
+  "subTitle": "Completa toda la información del cliente a continuación y haz clic en crear para finalizar el proceso.",
+  "upload": "Subir",
+  "create": "Crear",
+  "cancel": "Cancelar",
+  "fields": {
+    "customer": "Nombre del cliente",
+    "email": "Correo electrónico de contacto",
+    "emailPlaceholder": "Notificaciones, facturas y enlaces de registro únicos se enviarán a este correo electrónico.",
+    "credentialsType": "Tipo de credenciales del usuario",
+    "credentialPlaceholder": "El tipo de credenciales determina cómo se autenticarán los usuarios."
+  },
+  "credentialsOptions": {
+    "emailPassword": "Cuenta de inicio de sesión y contraseña"
+  },
+  "validations": {
+    "nameRequired": "Nombre del cliente",
+    "nameLength": "Debe tener al menos 5 caracteres.",
+    "nameExists": "Este nombre de cliente",
+    "emailRequired": "Correo electrónico de contacto",
+    "emailInvalidFormat": "El correo electrónico de contacto debe estar correctamente formateado",
+    "credentialRequired": "Tipo de credenciales"
+  }
+}

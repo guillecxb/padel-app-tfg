@@ -1,0 +1,21 @@
+{
+  "cancel": "Cancel",
+  "confirm": "Confirm",
+  "dismiss": {
+    "title": "Dismiss alert",
+    "subtitle": "Are you sure you want to dismiss the selected alert?",
+    "description": "You won't be able to access it again."
+  },
+  "dismissAll": {
+    "title": "Dismiss alerts",
+    "subtitle": "Are you sure you want to dismiss all your alerts?",
+    "description": "You won't be able to access them again."
+  },
+  "contact-us": {
+    "more-info": "Contact us",
+    "description": "If you need more information about a product or if you are experiencing any issues, please contact us directly by email or by phone.",
+    "by-email": "Email",
+    "by-phone": "Phone",
+    "availability": "Monday to Friday 9AM to 6PM"
+  }
+}

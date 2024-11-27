@@ -1,0 +1,20 @@
+{
+  "login": {
+    "required": "Ihr Benutzername muss angegeben werden"
+  },
+  "password": {
+    "required": "Ihr Passwort muss angegeben werden"
+  },
+  "validations": {
+    "nameRequired": "Name ist erforderlich",
+    "passwordRequired": "Passwort ist erforderlich",
+    "field-required": "{{field}} ist ein erforderliches Feld",
+    "field-already-taken": "{{field}} ist bereits vergeben",
+    "field-invalid": "{{field}} ist ungültig",
+    "field-email-invalid": "Bitte geben Sie eine korrekt formatierte E-Mail-Adresse an",
+    "field-max-length": "{{field}} darf nicht mehr als {{count}} Zeichen haben",
+    "field-min-length": "{{field}} muss mindestens {{count}} Zeichen haben",
+    "field-integer-greater-than": "{{field}} sollte mindestens {{limit}} sein",
+    "async-error": "Serverfehler bei der Validierung von {{field}}: {{message}}"
+  }
+}

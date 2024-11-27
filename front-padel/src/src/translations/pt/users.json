@@ -1,0 +1,31 @@
+{
+  "headerTitle": "Lista de usuários",
+  "createUser": "Criar usuário",
+  "createSubtitle": "Preencha os campos para o novo usuário",
+  "headerTitleName": "Lista de usuários de {{name}}",
+  "table": {
+    "id": "ID do usuário",
+    "name": "Nome do usuário",
+    "lastConnection": "Última conexão",
+    "type": "Tipo",
+    "credentialStatus": "Status das credenciais",
+    "role": "Função",
+    "activeReservations": "Reservas ativas"
+  },
+  "add": "Adicionar usuário",
+  "totalUsers": "Total de usuários: {{count}}",
+  "currentUser": "{{id}} <you>(você)</you> ",
+  "validations": {
+    "name": "Nome",
+    "password": "Senha",
+    "role": "Função"
+  },
+  "fields": {
+    "name": "Nome",
+    "password": "Senha",
+    "role": "Função",
+    "customer": "Cliente",
+    "operator": "Operador",
+    "roleHelperText": "Selecione a função do usuário"
+  }
+}

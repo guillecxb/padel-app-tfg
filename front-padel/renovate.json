@@ -1,0 +1,44 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "baseBranches": ["develop"],
+  "automerge": true,
+  "major": {
+    "automerge": false
+  },
+  "minor": {
+    "automerge": true
+  },
+  "separateMultipleMajor": true,
+  "rangeStrategy": "pin",
+  "node": {
+    "supportPolicy": ["active"]
+  },
+  "packageRules": [
+    {
+      "depTypeList": ["peerDependencies", "engines"],
+      "rangeStrategy": "widen"
+    },
+    {
+      "packageNames": ["@mui/material", "@mui/icons-material", "@mui/styles", "@mui/x-data-grid"],
+      "automerge": false
+    },
+    {
+      "packageNames": ["node-sass", "strip-ansi"],
+      "enabled": false
+    }
+  ],
+  "labels": [
+    "dependencies",
+    "renovate"
+  ],
+  "prCreation": "not-pending",
+  "stabilityDays": 3,
+  "prHourlyLimit": 5,
+  "prConcurrentLimit": 2,
+  "rebaseStalePrs": true,
+  "timezone": "Europe/Madrid",
+  "schedule": ["after 10pm and before 6am on every weekday", "every weekend"],
+  "masterIssue": true
+}

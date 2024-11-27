@@ -1,0 +1,31 @@
+{
+  "headerTitle": "Benutzerliste",
+  "createUser": "Benutzer erstellen",
+  "createSubtitle": "Füllen Sie die Felder für den neuen Benutzer aus",
+  "headerTitleName": "{{name}} Benutzerliste",
+  "table": {
+    "id": "Benutzer-ID",
+    "name": "Benutzername",
+    "lastConnection": "Letzte Verbindung",
+    "type": "Typ",
+    "credentialStatus": "Anmeldestatus",
+    "role": "Rolle",
+    "activeReservations": "Aktive Reservierungen"
+  },
+  "add": "Benutzer hinzufügen",
+  "totalUsers": "Gesamtanzahl Benutzer: {{count}}",
+  "currentUser": "{{id}} <you>(Sie)</you>",
+  "validations": {
+    "name": "Name",
+    "password": "Passwort",
+    "role": "Rolle"
+  },
+  "fields": {
+    "name": "Name",
+    "password": "Passwort",
+    "role": "Rolle",
+    "customer": "Kunde",
+    "operator": "Operator",
+    "roleHelperText": "Wählen Sie die Rolle des Benutzers aus"
+  }
+}

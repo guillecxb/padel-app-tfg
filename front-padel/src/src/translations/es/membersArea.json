@@ -1,0 +1,25 @@
+{
+    "title": "Área de Miembros",
+    "myReservations": "Mis Reservas",
+    "noReservations": "Aún no tienes reservas",
+    "createReservation": "Crear Reserva",
+    "profile": "Perfil",
+    "reservations": "Reservas",
+    "bookAClass": "Reservar una Clase",
+    "loadingReservations": "Cargando reservas...",
+    "errorLoadingReservations": "Error al cargar reservas",
+    "club": "Club:",
+    "court": "Pista:",
+    "dateAndTime": "Fecha y Hora: ",
+    "temperature": "Temp: ",
+    "wind": "Viento: ",
+    "humidity": "Humedad: ",
+    "temperatureUnavailable": "El tiempo solo está disponible con 15 días de antelación.",
+    "confirmDelete": "Confirmar eliminación",
+    "confirmDeletion1": "¿Estás seguro de que deseas eliminar la reserva para el club",
+    "confirmDeletion2": "en la pista",
+    "confirmDeletion3": "para la fecha y hora",
+    "cancel": "Cancelar",
+    "delete": "Eliminar"
+  }
+  

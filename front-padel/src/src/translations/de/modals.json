@@ -1,0 +1,22 @@
+{
+  "cancel": "Abbrechen",
+  "confirm": "Bestätigen",
+  "dismiss": {
+    "title": "Warnung schließen",
+    "subtitle": "Möchten Sie die ausgewählte Warnung wirklich schließen?",
+    "description": "Sie können später nicht mehr darauf zugreifen."
+  },
+  "dismissAll": {
+    "title": "Alle Warnungen schließen",
+    "subtitle": "Möchten Sie wirklich alle Ihre Warnungen schließen?",
+    "description": "Sie können später nicht mehr darauf zugreifen."
+  },
+  "contact-us": {
+    "more-info": "Kontaktieren Sie uns",
+    "description": "Wenn Sie weitere Informationen zu einem Produkt benötigen oder Probleme haben, kontaktieren Sie uns bitte direkt per E-Mail oder Telefon.",
+    "by-email": "E-Mail",
+    "by-phone": "Telefon",
+    "availability": "Montag bis Freitag 9 bis 18 Uhr"
+  }
+}
+

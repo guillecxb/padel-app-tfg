@@ -1,0 +1,43 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# dependencies
+/node_modules
+/.pnp
+.pnp.js
+
+# custom assets
+/public/*.png
+/public/*.ico
+/public/manifest.json
+/public/config.json
+
+# testing
+/coverage
+/coverage-eslint-local-rules
+
+# production
+/build
+/build-storybook
+/builds
+/reports
+
+# dynamic configuration
+/serve.json
+
+# eslint
+.eslintcache
+src\.eslintrc.json
+
+# misc
+.tmp
+.tmp-storage
+.logs
+.DS_Store
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

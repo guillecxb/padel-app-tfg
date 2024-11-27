@@ -1,0 +1,80 @@
+{
+  "breadcrumbsMain": "Operatoren",
+  "breadcrumbNew": "Neuer Operator",
+  "editUserSubtitle": "Füllen Sie die neuen Felder für diesen Benutzer aus.",
+  "breadcrumbEdit": "Operator-Benutzer bearbeiten",
+  "breadcrumbView": "Benutzer anzeigen",
+  "title": "Neuer Operator",
+  "editTitle": "Operator-Benutzer bearbeiten",
+  "addNew": "Neuen Operator hinzufügen",
+  "editUser": "Operator bearbeiten",
+  "edit365": "Operator bearbeiten",
+  "userPassDescription": "Erstellen Sie einen Benutzernamen und ein Passwort für den neuen Benutzer. Sie können auch ein automatisches Passwort generieren, indem Sie auf die Schaltfläche 'Passwort generieren' klicken. Denken Sie daran, die Anmeldedaten nach diesem Vorgang an den Operator zu senden.",
+  "editUserLabel": "Benutzer-ID: {{userId}}",
+  "saveChanges": "Änderungen speichern",
+  "fields": {
+    "name": "Name",
+    "label": "Etikett",
+    "username": "Benutzername",
+    "usernameHelper": "Muss mindestens 5 Zeichen haben.",
+    "password": "Passwort",
+    "passwordHelper": "Muss mindestens 8 Zeichen, einen Großbuchstaben, eine Zahl und ein !%*#?& Symbol enthalten.",
+    "operator": "Operator-Typ"
+  },
+  "validations": {
+    "nameRequired": "Name ist erforderlich",
+    "passwordRequired": "Passwort ist erforderlich"
+  },
+  "types": {
+    "credentials": "Login- und Passwortkonto"
+  },
+  "form": {
+    "passwordError": "Ungültiges Passwort. Muss mindestens 8 Zeichen, einen Großbuchstaben, eine Zahl und ein !%*#?& Symbol enthalten.",
+    "operatorError": "Der Operator-Typ muss ausgewählt werden",
+    "alreadyExists": "Login existiert bereits, bitte versuchen Sie einen anderen",
+    "errorOnCreate": "Benutzer konnte aufgrund eines internen Fehlers nicht erstellt werden. Bitte versuchen Sie es erneut",
+    "errorOnEdit": "Benutzer konnte aufgrund eines internen Fehlers nicht bearbeitet werden. Bitte versuchen Sie es erneut",
+    "submit": "Erstellen",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "copy": "Kopieren",
+    "exit": "Prozess beenden",
+    "generatePass": "Passwort generieren",
+    "refreshPass": "Passwort aktualisieren",
+    "generatedPass": "Neues Passwort generiert!",
+    "usernameCopied": "Benutzername kopiert!",
+    "passwordCopied": "Passwort kopiert!",
+    "linkCopied": "Link kopiert!",
+    "linkGenerated": "Link generiert!"
+  },
+  "operators": {
+    "operator": "Kundenbetreuung",
+    "deployOperator": "Servicebereitsteller"
+  },
+  "operator": {
+    "editUser": "Operator bearbeiten",
+    "viewUser": "Benutzer anzeigen",
+    "viewUserDetails": "Benutzerdetails"
+  },
+  "customer": {
+    "breadcrumb": {
+      "main": "Benutzer",
+      "new": "Benutzer hinzufügen",
+      "edit": "Benutzer bearbeiten"
+    },
+    "addDescription": "Erstellen Sie einen Benutzernamen und ein Passwort für den neuen Benutzer. Sie können auch ein automatisches Passwort generieren, indem Sie auf die Schaltfläche 'Passwort generieren' klicken. Denken Sie daran, die Anmeldedaten nach diesem Vorgang an den Benutzer zu senden.",
+    "addUser": "Benutzer hinzufügen",
+    "newUser": "Neuer Benutzer",
+    "editUser": "Benutzer bearbeiten",
+    "viewUser": "Benutzer anzeigen",
+    "viewUserDetails": "Benutzerdetails",
+    "deleteModal": {
+      "title": "Benutzerkonto löschen",
+      "message": "Sind Sie sicher, dass Sie den Benutzer {{userId}} löschen möchten?",
+      "messageOwner": "Sind Sie sicher, dass Sie Ihr eigenes Konto löschen möchten?",
+      "warning": "Das Löschen dieses Kontos entfernt alle Informationen zu diesem Benutzer. Diese Aktion kann nicht rückgängig gemacht werden.",
+      "cancel": "Abbrechen",
+      "delete": "Löschen"
+    }
+  }
+}

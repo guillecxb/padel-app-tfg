@@ -1,0 +1,62 @@
+{
+  "default": {
+    "success": "Proceso finalizado con éxito",
+    "error": "Algo salió mal.",
+    "empty": "Aún no hay datos para mostrar."
+  },
+  "login": {
+    "401": "Error de inicio de sesión. El nombre de usuario o la contraseña que proporcionaste no coinciden con nuestros registros.",
+    "error": "Error de inicio de sesión debido a un error interno, por favor inténtalo de nuevo. Si el error persiste, contacta a nuestro equipo de soporte."
+  },
+  "activityLogTable": {
+    "empty": "Aún no hay contenido para mostrar",
+    "noMatch": "No hay resultados para tu búsqueda",
+    "error": {
+      "title": "Error al cargar",
+      "description": "El registro de actividad no pudo ser cargado debido a un error interno. Por favor, inténtalo de nuevo más tarde."
+    }
+  },
+  "customersTable": {
+    "empty": "Aún no hay clientes para mostrar.",
+    "noMatch": "No hay resultados para tu búsqueda",
+    "error": {
+      "title": "Error al cargar",
+      "description": "La lista de clientes no pudo ser cargada debido a un error interno. Por favor, inténtalo de nuevo más tarde."
+    }
+  },
+  "alerts": {
+    "empty": "No hay alertas",
+    "error": {
+      "title": "Error al cargar",
+      "description": "La lista de alertas no pudo ser cargada debido a un error interno. Por favor, inténtalo de nuevo más tarde."
+    }
+  },
+  "createUser": {
+    "successTitle": "Usuario creado con éxito",
+    "success": "Por favor, envía las credenciales al nuevo usuario.",
+    "errorTitle": "Error interno",
+    "error": "El operador no pudo ser creado, por favor inténtalo de nuevo. Si el error persiste, contacta a nuestro equipo de soporte."
+  },
+  "editUser": {
+    "successTitle": "El usuario {{userId}} ha sido editado con éxito",
+    "success": "Por favor, envía las nuevas credenciales al usuario.",
+    "errorTitle": "Error interno",
+    "error": "El usuario no pudo ser editado, por favor inténtalo de nuevo. Si el error persiste, contacta a nuestro equipo de soporte."
+  },
+  "deleteUser": {
+    "success": "El usuario {{userId}} ha sido eliminado con éxito",
+    "errorTitle": "Error interno",
+    "error": "El usuario no pudo ser eliminado, por favor inténtalo de nuevo. Si el error persiste, contacta a nuestro equipo de soporte."
+  },
+  "dismissAll": {
+    "error": "Las alertas no pudieron ser descartadas, por favor inténtalo de nuevo. Si el error persiste, contacta a nuestro equipo de soporte."
+  },
+  "dismiss": {
+    "error": "La alerta no pudo ser descartada, por favor inténtalo de nuevo. Si el error persiste, contacta a nuestro equipo de soporte."
+  },
+  "operatorNewCustomer": {
+    "success": "El cliente {{customer}} ha sido creado con éxito.",
+    "errorTitle": "Error al cargar",
+    "error": "El cliente {{customer}} no pudo ser creado, por favor inténtalo de nuevo. Si el error persiste, contacta a nuestro equipo de soporte."
+  }
+}

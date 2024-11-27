@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkpadel_app=self.webpackChunkpadel_app||[]).push([[9380],{39380:e=>{e.exports=JSON.parse('{"headerTitle":"Padel-Clubs","totalCustomers":"Gesamtanzahl der Padel-Clubs: {{count}}","searchLabel":"Club suchen","add":"Club hinzuf\xfcgen"}')}}]);

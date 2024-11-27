@@ -1,0 +1,12 @@
+{
+  "public": "build-storybook",
+  "trailingSlash": false,
+  "directoryListing": false,
+  "cleanUrls": true,
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/index.html"
+    }
+  ]
+}

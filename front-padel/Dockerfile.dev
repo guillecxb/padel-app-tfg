@@ -1,0 +1,3 @@
+FROM harbor.hi.inet/proxy_cache/cypress/base:16
+
+WORKDIR /src

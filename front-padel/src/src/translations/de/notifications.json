@@ -1,0 +1,62 @@
+{
+  "default": {
+    "success": "Prozess erfolgreich abgeschlossen",
+    "error": "Etwas ist schiefgelaufen.",
+    "empty": "Es gibt noch keine Daten anzuzeigen."
+  },
+  "login": {
+    "401": "Anmeldung fehlgeschlagen. Der angegebene Benutzername oder das Passwort stimmen nicht mit unseren Aufzeichnungen überein.",
+    "error": "Anmeldung aufgrund eines internen Fehlers fehlgeschlagen, bitte versuchen Sie es erneut. Wenn der Fehler weiterhin besteht, wenden Sie sich bitte an unser Support-Team."
+  },
+  "activityLogTable": {
+    "empty": "Es gibt noch keinen Inhalt anzuzeigen",
+    "noMatch": "Es gibt keine Ergebnisse für Ihre Suche",
+    "error": {
+      "title": "Laden fehlgeschlagen",
+      "description": "Das Aktivitätenprotokoll konnte aufgrund eines internen Fehlers nicht geladen werden. Bitte versuchen Sie es später erneut."
+    }
+  },
+  "customersTable": {
+    "empty": "Es gibt noch keine Kunden anzuzeigen.",
+    "noMatch": "Es gibt keine Ergebnisse für Ihre Suche",
+    "error": {
+      "title": "Laden fehlgeschlagen",
+      "description": "Die Kundenliste konnte aufgrund eines internen Fehlers nicht geladen werden. Bitte versuchen Sie es später erneut."
+    }
+  },
+  "alerts": {
+    "empty": "Es gibt keine Warnungen",
+    "error": {
+      "title": "Laden fehlgeschlagen",
+      "description": "Die Warnungsliste konnte aufgrund eines internen Fehlers nicht geladen werden. Bitte versuchen Sie es später erneut."
+    }
+  },
+  "createUser": {
+    "successTitle": "Benutzer erfolgreich erstellt",
+    "success": "Bitte senden Sie die Anmeldedaten an den neuen Benutzer.",
+    "errorTitle": "Interner Fehler",
+    "error": "Der Operator konnte nicht erstellt werden, bitte versuchen Sie es erneut. Wenn der Fehler weiterhin besteht, wenden Sie sich bitte an unser Support-Team."
+  },
+  "editUser": {
+    "successTitle": "Der Benutzer {{userId}} wurde erfolgreich bearbeitet",
+    "success": "Bitte senden Sie dem Benutzer die neuen Anmeldedaten.",
+    "errorTitle": "Interner Fehler",
+    "error": "Der Benutzer konnte nicht bearbeitet werden, bitte versuchen Sie es erneut. Wenn der Fehler weiterhin besteht, wenden Sie sich bitte an unser Support-Team."
+  },
+  "deleteUser": {
+    "success": "Der Benutzer {{userId}} wurde erfolgreich gelöscht",
+    "errorTitle": "Interner Fehler",
+    "error": "Der Benutzer konnte nicht bearbeitet werden, bitte versuchen Sie es erneut. Wenn der Fehler weiterhin besteht, wenden Sie sich bitte an unser Support-Team."
+  },
+  "dismissAll": {
+    "error": "Die Warnungen konnten nicht gelöscht werden, bitte versuchen Sie es erneut. Wenn der Fehler weiterhin besteht, wenden Sie sich bitte an unser Support-Team."
+  },
+  "dismiss": {
+    "error": "Die Warnung konnte nicht gelöscht werden, bitte versuchen Sie es erneut. Wenn der Fehler weiterhin besteht, wenden Sie sich bitte an unser Support-Team."
+  },
+  "operatorNewCustomer": {
+    "success": "Der Kunde {{customer}} wurde erfolgreich erstellt.",
+    "errorTitle": "Laden fehlgeschlagen",
+    "error": "Der Kunde {{customer}} konnte nicht erstellt werden, bitte versuchen Sie es erneut. Wenn der Fehler weiterhin besteht, wenden Sie sich bitte an unser Support-Team."
+  }
+}

@@ -1,0 +1,18 @@
+FROM nginx:alpine
+
+# Define la variable de construcción APP
+ARG APP
+
+# Establece el directorio de trabajo dentro del contenedor
+WORKDIR /usr/share/nginx/html
+
+# Copia los archivos públicos según la variable APP
+COPY src/deploy/public/${APP} .
+
+# Copia tu configuración completa de Nginx
+COPY nginx.conf /etc/nginx/nginx.conf
+
+# Expone el puerto 8081
+EXPOSE 8081
+
+

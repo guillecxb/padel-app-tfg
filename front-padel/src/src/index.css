@@ -1,0 +1,31 @@
+@font-face {
+  font-family: 'Sans Regular'; /* nombre que usaré en el css para referirme a esta fuente */
+  font-style: normal; /* fuente normal, no cursiva ni oblicua */
+  src: url(./custom/assets/padel-app/fonts/Sans_Regular.woff2); /* la ruta donde se encuentra el archivo de la fuente. */
+}
+
+@font-face {
+  font-family: 'Sans Medium';
+  font-style: normal;
+  src: url(./custom/assets/padel-app/fonts/Sans_DemiBold.woff2);
+}
+
+@font-face {
+  font-family: 'Sans Light';
+  font-style: normal;
+  src: url(./custom/assets/padel-app/fonts/Sans_Light.woff2);
+}
+
+body {
+  margin: 0;
+  width: 100%;
+  height: 100vh;
+  font-family: 'Sans Regular', 'Helvetica', 'Arial', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}

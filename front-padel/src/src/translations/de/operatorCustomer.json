@@ -1,0 +1,27 @@
+{
+  "breadcrumbsMain": "Kunden",
+  "breadcrumbView": "Neuer Kunde",
+  "title": "Allgemein",
+  "subTitle": "Füllen Sie alle Kundeninformationen unten aus und klicken Sie auf Erstellen, um den Vorgang abzuschließen.",
+  "upload": "Hochladen",
+  "create": "Erstellen",
+  "cancel": "Abbrechen",
+  "fields": {
+    "customer": "Kundenname",
+    "email": "Kontakt-E-Mail",
+    "emailPlaceholder": "Benachrichtigungen, Rechnungen und einmalige Registrierungslinks werden an diese E-Mail gesendet.",
+    "credentialsType": "Anmeldedaten-Typ",
+    "credentialPlaceholder": "Der Typ der Anmeldedaten bestimmt, wie sich Benutzer authentifizieren."
+  },
+  "credentialsOptions": {
+    "emailPassword": "Konto mit Login und Passwort"
+  },
+  "validations": {
+    "nameRequired": "Kundenname",
+    "nameLength": "Muss mindestens 5 Zeichen haben.",
+    "nameExists": "Dieser Kundenname",
+    "emailRequired": "Kontakt-E-Mail",
+    "emailInvalidFormat": "Kontakt-E-Mail muss richtig formatiert sein",
+    "credentialRequired": "Anmeldedaten-Typ"
+  }
+}

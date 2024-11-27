@@ -1,0 +1,30 @@
+{
+  "_base": {
+    "_base": {
+      "PUBLIC_URL": "/",
+      "REACT_APP_PROTOCOL": "http",
+      "REACT_APP_API": "localhost:8000",
+      "REACT_APP_ORCHESTRATOR_API": "localhost:3100",
+      "REACT_APP_VERSION": "",
+      "FIVEG_S3_BUCKET_NAME": "padel-app-logos-default1-eu-central-1",
+      "AWS_DEFAULT_REGION": "undefined"
+    },
+    "padel-app": {
+      "PUBLIC_URL": "/",
+      "REACT_APP_THEME": "default",
+      "REACT_APP_ASSETS": "padel-app",
+      "REACT_APP_SETTINGS": "padel-app",
+      "FIVEG_S3_BUCKET_NAME": "padel-app-logos-default2-eu-central-1",
+      "AWS_DEFAULT_REGION": "undefined"
+    }
+  },
+  "develop": {
+    "_base": {
+      "REACT_APP_PROTOCOL": "https",
+      "REACT_APP_API": "wrong-url.padel-app.tid.es",
+      "REACT_APP_ORCHESTRATOR_API": "wrong-url.padel-app.tid.es",
+      "FIVEG_S3_BUCKET_NAME": "padel-app-logos-develop-eu-central-1",
+      "AWS_DEFAULT_REGION": "undefined"
+    }
+  }
+}

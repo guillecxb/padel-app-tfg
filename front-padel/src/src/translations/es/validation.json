@@ -1,0 +1,20 @@
+{
+  "login": {
+    "required": "Debes proporcionar tu nombre de usuario"
+  },
+  "password": {
+    "required": "Debes proporcionar tu contraseña"
+  },
+  "validations": {
+    "nameRequired": "El nombre es obligatorio",
+    "passwordRequired": "La contraseña es obligatoria",
+    "field-required": "{{field}} es un campo obligatorio",
+    "field-already-taken": "{{field}} ya está en uso",
+    "field-invalid": "{{field}} no es válido",
+    "field-email-invalid": "Por favor, proporciona una dirección de correo electrónico con el formato correcto",
+    "field-max-length": "{{field}} debe tener menos de {{count}} caracteres",
+    "field-min-length": "{{field}} debe tener al menos {{count}} caracteres",
+    "field-integer-greater-than": "{{field}} debe ser al menos {{limit}}",
+    "async-error": "Error del servidor al validar {{field}}: {{message}}"
+  }
+}

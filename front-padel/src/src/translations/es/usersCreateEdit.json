@@ -1,0 +1,80 @@
+{
+  "breadcrumbsMain": "Operadores",
+  "breadcrumbNew": "Nuevo operador",
+  "editUserSubtitle": "Rellena los nuevos campos para este usuario.",
+  "breadcrumbEdit": "Editar usuario operador",
+  "breadcrumbView": "Ver usuario",
+  "title": "Nuevo operador",
+  "editTitle": "Editar usuario operador",
+  "addNew": "Agregar nuevo operador",
+  "editUser": "Editar operador",
+  "edit365": "Editar operador",
+  "userPassDescription": "Crea un nombre de usuario y una contraseña para el nuevo usuario. También puedes generar una contraseña automática haciendo clic en el botón de generar contraseña. Recuerda copiar y enviar las credenciales al operador después de este proceso.",
+  "editUserLabel": "ID del Usuario: {{userId}}",
+  "saveChanges": "Guardar cambios",
+  "fields": {
+    "name": "Nombre",
+    "label": "Etiqueta",
+    "username": "Nombre de usuario",
+    "usernameHelper": "Debe tener al menos 5 caracteres.",
+    "password": "Contraseña",
+    "passwordHelper": "Debe tener al menos 8 caracteres, una letra mayúscula, un número y un símbolo !%*#?&.",
+    "operator": "Tipo de operador"
+  },
+  "validations": {
+    "nameRequired": "El nombre es obligatorio",
+    "passwordRequired": "La contraseña es obligatoria"
+  },
+  "types": {
+    "credentials": "Cuenta de inicio de sesión y contraseña"
+  },
+  "form": {
+    "passwordError": "Contraseña inválida. Debe tener al menos 8 caracteres, una letra mayúscula, un número y un símbolo !%*#?&.",
+    "operatorError": "Debe seleccionarse el tipo de operador",
+    "alreadyExists": "El nombre de usuario ya existe, por favor intenta con otro",
+    "errorOnCreate": "No se pudo crear el usuario debido a un error interno. Por favor intenta nuevamente",
+    "errorOnEdit": "No se pudo editar el usuario debido a un error interno. Por favor intenta nuevamente",
+    "submit": "Crear",
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "copy": "Copiar",
+    "exit": "Salir del proceso",
+    "generatePass": "Generar contraseña",
+    "refreshPass": "Actualizar contraseña",
+    "generatedPass": "¡Nueva contraseña generada!",
+    "usernameCopied": "¡Nombre de usuario copiado!",
+    "passwordCopied": "¡Contraseña copiada!",
+    "linkCopied": "¡Enlace copiado!",
+    "linkGenerated": "¡Enlace generado!"
+  },
+  "operators": {
+    "operator": "Atención al cliente",
+    "deployOperator": "Desplegador de servicios"
+  },
+  "operator": {
+    "editUser": "Editar operador",
+    "viewUser": "Ver usuario",
+    "viewUserDetails": "Detalles del usuario"
+  },
+  "customer": {
+    "breadcrumb": {
+      "main": "Usuarios",
+      "new": "Agregar usuario",
+      "edit": "Editar usuario"
+    },
+    "addDescription": "Crea un nombre de usuario y una contraseña para el nuevo usuario. También puedes generar una contraseña automática haciendo clic en el botón de generar contraseña. Recuerda copiar y enviar las credenciales al usuario después de este proceso.",
+    "addUser": "Agregar usuario",
+    "newUser": "Nuevo usuario",
+    "editUser": "Editar usuario",
+    "viewUser": "Ver usuario",
+    "viewUserDetails": "Detalles del usuario",
+    "deleteModal": {
+      "title": "Eliminar cuenta de usuario",
+      "message": "¿Estás seguro de que deseas eliminar al usuario {{userId}}?",
+      "messageOwner": "¿Estás seguro de que deseas eliminar tu propia cuenta?",
+      "warning": "Eliminar esta cuenta eliminará toda la información de este usuario. Esta acción no se puede deshacer.",
+      "cancel": "Cancelar",
+      "delete": "Eliminar"
+    }
+  }
+}

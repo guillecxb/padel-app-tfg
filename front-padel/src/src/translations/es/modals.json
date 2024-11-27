@@ -1,0 +1,22 @@
+
+{
+  "cancel": "Cancelar",
+  "confirm": "Confirmar",
+  "dismiss": {
+    "title": "Descartar alerta",
+    "subtitle": "¿Estás seguro de que deseas descartar la alerta seleccionada?",
+    "description": "No podrás acceder a ella nuevamente."
+  },
+  "dismissAll": {
+    "title": "Descartar alertas",
+    "subtitle": "¿Estás seguro de que deseas descartar todas tus alertas?",
+    "description": "No podrás acceder a ellas nuevamente."
+  },
+  "contact-us": {
+    "more-info": "Contáctanos",
+    "description": "Si necesitas más información sobre un producto o si estás experimentando algún problema, por favor contáctanos directamente por correo electrónico o por teléfono.",
+    "by-email": "Correo electrónico",
+    "by-phone": "Teléfono",
+    "availability": "Lunes a Viernes de 9AM a 6PM"
+  }
+}

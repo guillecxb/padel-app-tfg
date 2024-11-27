@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkpadel_app=self.webpackChunkpadel_app||[]).push([[8226],{98226:e=>{e.exports=JSON.parse('{"title":"Perguntas Frequentes","subtitle":"Aqui voc\xea encontrar\xe1 respostas para as perguntas mais comuns sobre nosso clube de padel. Se tiver outras d\xfavidas, n\xe3o hesite em nos contatar.","errorLoading":"Erro ao carregar perguntas frequentes."}')}}]);

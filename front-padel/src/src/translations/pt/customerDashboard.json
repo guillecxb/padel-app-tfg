@@ -1,0 +1,12 @@
+{
+  "title": "Nossos clubes",
+  "search": "Pesquisar por nome ou cidade",
+  "list": "Lista",
+  "poweredby": "Desenvolvido por Guille",
+  "booAkACourt": "Reservar uma quadra",
+  "backToClubs": "Voltar para a seleção de clubes",
+  "currentClimate": "Clima atual",
+  "wind": "Vento: ",
+  "humidity": "Umidade: ",
+  "loadingClimate": "Carregando clima..."
+}

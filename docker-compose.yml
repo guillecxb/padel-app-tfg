@@ -1,0 +1,49 @@
+version: '3.8'
+services:
+  db:
+    build:
+      context: ./backend/postgres
+    container_name: postgres_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: dbname
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+
+  app:
+    build: ./backend
+    container_name: padel_backend
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: "postgresql://user:password@db/dbname"
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: my_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "8083:80"
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./front-padel
+      dockerfile: Dockerfile.deploy-app
+      args:
+        APP: padel-app
+    container_name: padel_frontend
+    ports:
+      - "8081:8081"
+    depends_on:
+      - app
+volumes:
+  postgres_data:

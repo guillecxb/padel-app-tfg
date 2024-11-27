@@ -1,0 +1,16 @@
+{
+  "routes": {
+    "dashboard": "Inicio",
+    "coaching": "Entrenamiento",
+    "store": "Tienda",
+    "faqs": "Preguntas frecuentes",
+    "news": "Noticias",
+    "contactUs": "Contáctanos",
+    "membersArea": "Área de miembros",
+    "customers": "Clubs",
+    "operators": "Operadores",
+    "users": "Usuarios",
+    "reservations": "Reservas"
+  },
+  "contactUs": "Contáctanos"
+}

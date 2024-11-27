@@ -1,0 +1,14 @@
+# Usa una imagen de Nginx para servir los archivos estáticos
+FROM nginx:alpine
+
+# Copia los archivos estáticos desde la carpeta local 'public' a la carpeta de Nginx
+COPY public /usr/share/nginx/html
+
+# Copia un archivo de configuración de Nginx personalizado, si tienes uno
+# COPY nginx.conf /etc/nginx/nginx.conf
+
+# Exponer el puerto en el que Nginx está escuchando
+EXPOSE 80
+
+# Inicia Nginx
+CMD ["nginx", "-g", "daemon off;"]

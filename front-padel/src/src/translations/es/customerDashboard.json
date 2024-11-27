@@ -1,0 +1,12 @@
+{
+  "title": "Nuestros clubes",
+  "search": "Buscar por nombre o ciudad",
+  "list": "Lista",
+  "poweredby": "Desarrollado por Guille",
+  "booAkACourt": "Reservar una pista",
+  "backToClubs": "Volver a la selección de clubes",
+  "currentClimate": "Clima actual",
+  "wind": "Viento: ",
+  "humidity": "Humedad: ",
+  "loadingClimate": "Cargando clima..."
+}

@@ -1,0 +1,11 @@
+{
+  "plugins": [
+    "stylelint-scss"
+  ],
+  "ignoreFiles": [
+    "**/*.png",
+    "**/*.jpg",
+    "**/*.ico"
+  ],
+  "extends": "stylelint-config-recommended"
+}

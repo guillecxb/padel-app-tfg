@@ -1,0 +1,12 @@
+{
+  "headerTitle": "Operatoren",
+  "table": {
+    "id": "Operator-ID",
+    "name": "Operator-Name",
+    "type": "Typ",
+    "lastConnection": "Letzte Verbindung",
+    "credentialStatus": "Status der Anmeldedaten"
+  },
+  "add": "Operator hinzufügen",
+  "totalOperators": "Gesamtanzahl der Operatoren: {{count}}"
+}
