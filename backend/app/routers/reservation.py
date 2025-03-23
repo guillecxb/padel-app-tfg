@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, BackgroundTasks
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, func
 from services.weather_service import get_weather_for_reservation
@@ -10,6 +10,8 @@ from models.customer import Customer
 from pydantic import BaseModel
 from datetime import datetime, timedelta
 from typing import List, Optional
+from services.email_service import send_email
+import asyncio
 
 router = APIRouter()
 
@@ -70,7 +72,7 @@ def check_reservation_availability(db: Session, court_id: int, start_time: datet
     return len(overlapping_reservations) == 0
 
 @router.post("/reservations/", response_model=ReservationResponse)
-def create_reservation(reservation: ReservationCreate, db: Session = Depends(get_db)):
+def create_reservation(background_tasks: BackgroundTasks, reservation: ReservationCreate, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == reservation.user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -104,6 +106,15 @@ def create_reservation(reservation: ReservationCreate, db: Session = Depends(get
     db.add(db_reservation)
     db.commit()
     db.refresh(db_reservation)
+
+    background_tasks.add_task(
+        send_email,
+        user.email,
+        court.name,
+        customer.name,
+        reservation.reservation_time.strftime("%d/%m/%Y %H:%M")
+    )
+
     return db_reservation
 
 @router.get("/users/{user_id}/reservations/", response_model=List[ReservationResponse])

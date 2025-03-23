@@ -134,7 +134,8 @@ def auth_me(Authorize: AuthJWT = Depends()):
 
 @router.post('/user', response_model=UserResponseSchema)
 def create_user(user: UserCreateSchema, db: Session = Depends(get_db)):
-    db_user = User(name=user.name, password=user.password)
+    # db_user = User(name=user.name, password=user.password)
+    db_user = User(name=user.name, password=user.password, email=user.email)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -294,53 +295,6 @@ def get_users(db: Session = Depends(get_db)):
     )
 
 
-# @router.put('/user/{user_id}', response_model=UserResponseSchema2)
-# def update_user(
-#     user_id: int,
-#     user_update: UserUpdateSchema,
-#     db: Session = Depends(get_db),
-#     Authorize: AuthJWT = Depends()
-# ):
-#     # Requiere que el usuario esté autenticado
-#     Authorize.jwt_required()
-
-#     # Obtiene el ID del usuario autenticado
-#     current_user_id = int(Authorize.get_jwt_subject())
-
-#     # Obtiene el usuario autenticado de la base de datos
-#     current_user = db.query(User).filter(User.id == current_user_id).first()
-
-#     # Verifica permisos: el usuario puede editar si es el mismo, un "operator", o el "superadmin" con ID 1
-#     if current_user_id != user_id and current_user.role != "operator" and current_user_id != 1:
-#         raise HTTPException(status_code=403, detail="You do not have permission to edit this user")
-
-#     # Obtiene el usuario a actualizar de la base de datos
-#     user_to_update = db.query(User).filter(User.id == user_id).first()
-#     if not user_to_update:
-#         raise HTTPException(status_code=404, detail="User not found")
-
-#     # Actualiza los campos si se proporcionaron en la solicitud
-#     if user_update.name is not None:
-#         user_to_update.name = user_update.name
-#     if user_update.password is not None:
-#         user_to_update.password = user_update.password
-
-#     db.commit()
-#     db.refresh(user_to_update)
-
-#     # Devuelve la respuesta con el esquema `UserResponseSchema2`
-#     return UserResponseSchema2(
-#         id=user_to_update.id,
-#         name=user_to_update.name,
-#         role=user_to_update.role,
-#         active_reservations=db.query(func.count(Reservation.id))
-#                               .filter(Reservation.user_id == user_to_update.id,
-#                                       Reservation.reservation_time > datetime.utcnow())
-#                               .scalar()
-#     )
-
-
-
 @router.put('/user/{user_id}', response_model=UserResponseSchema2)
 def update_user(
     user_id: int,
@@ -371,6 +325,8 @@ def update_user(
         user_to_update.name = user_update.name
     if user_update.password is not None:
         user_to_update.password = user_update.password
+    if user_update.email is not None:
+        user_to_update.email = user_update.email
 
     db.commit()
     db.refresh(user_to_update)

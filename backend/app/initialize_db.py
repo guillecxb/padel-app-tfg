@@ -31,11 +31,10 @@ def create_initial_data():
 
         db.commit()
 
-        # Crear Usuarios
         users_data = [
-            {"name": "superadmin", "password": "1234", "role": "operator"},
-            {"name": "user1", "password": "userpass1", "role": "customer"},
-            {"name": "user2", "password": "userpass2", "role": "customer"},
+            {"name": "superadmin", "email": "admin@padelclub.com", "password": "1234", "role": "operator"},
+            {"name": "user1", "email": "g.sanzlopez16@gmail.com", "password": "userpass1", "role": "customer"},
+            {"name": "user2", "email": "user2@example.com", "password": "userpass2", "role": "customer"},
         ]
 
         for user_data in users_data:
