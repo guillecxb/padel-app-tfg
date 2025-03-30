@@ -168,11 +168,28 @@ const Booking = () => {
                       borderRadius: 1,
                       cursor: court.available ? 'pointer' : 'not-allowed',
                       pointerEvents: court.available ? 'auto' : 'none',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      height: '100%',
                     }}
                     onClick={() => handleCourtSelect(court.court_id)}
                   >
                     <Typography variant="h6">{court.court_name}</Typography>
                     <Typography variant="body2">{court.available ? 'Disponible' : 'Ocupada'}</Typography>
+
+                    {court.review_count > 0 ? (
+                      <>
+                        <Typography variant="body2" sx={{ mt: 1 }}>⭐ {court.average_rating.toFixed(1)} / 5</Typography>
+                        <Typography variant="caption" sx={{ fontStyle: 'italic' }}>
+                          "{court.reviews[court.reviews.length - 1]?.comment}"
+                        </Typography>
+                      </>
+                    ) : (
+                      <Typography variant="caption" sx={{ mt: 1, color: 'text.secondary' }}>
+                        Aún no hay comentarios disponibles
+                      </Typography>
+                    )}
                   </Box>
                 </Grid>
               ))}
