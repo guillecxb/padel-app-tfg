@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from db.database import engine, Base  # utilizado para interactuar con la base de datos
-from routers import reservation, login, customer, health, news, faq, weather
+from routers import reservation, login, customer, health, news, faq, weather, review
 from fastapi.middleware.cors import CORSMiddleware
 from models.user import User  # Asegúrate de importar los modelos
 # from initialize_db import create_initial_user, create_initial_courts
@@ -46,3 +46,4 @@ app.include_router(health.router, tags=["health"])
 app.include_router(news.router, tags=["news"])
 app.include_router(faq.router, tags=["FAQs"])
 app.include_router(weather.router, tags=["weather"])
+app.include_router(review.router, tags=["review"])

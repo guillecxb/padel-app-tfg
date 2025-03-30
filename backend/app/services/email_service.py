@@ -41,15 +41,15 @@ async def send_email(to_email: str, court_name: str, club_name: str, reservation
 
 
 # ✅ Función para enviar el email de recordatorio
-async def send_reminder_email(to_email: str, court_name: str, club_name: str, reservation_time: str):
+async def send_reminder_email(to_email: str, court_name: str, club_name: str, reservation_time: str, weather_message: str):
     email_body = f"""
-    Hola,
-
     ⏰ **Recordatorio de tu reserva**
 
     📍 **Club:** {club_name}
     🎾 **Pista:** {court_name}
     ⏰ **Fecha y hora:** {reservation_time}
+
+    {weather_message.strip()}
 
     No olvides tu cita. ¡Te esperamos en la pista!
 

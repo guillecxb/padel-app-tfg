@@ -12,6 +12,9 @@ from datetime import datetime, timedelta
 from typing import List, Optional
 from services.email_service import send_email
 import asyncio
+from models.review import CourtReview
+from schemas.review import CourtReviewResponse  # asegúrate de importar esto
+
 
 router = APIRouter()
 
@@ -42,6 +45,9 @@ class CourtAvailabilityResponse(BaseModel):
     court_id: int
     court_name: str
     available: bool
+    average_rating: Optional[float] = None
+    review_count: int
+    reviews: List[CourtReviewResponse] = []  # 🆕 reviews detalladas
 
     class Config:
         orm_mode = True
@@ -51,6 +57,15 @@ class ReservationCountByCourtResponse(BaseModel):
     court_name: str
     reservation_count: int
 
+    class Config:
+        orm_mode = True
+
+
+class ReviewOut(BaseModel):
+    id: int
+    user_id: int
+    rating: int
+    comment: Optional[str]
     class Config:
         orm_mode = True
 
@@ -96,12 +111,33 @@ def create_reservation(background_tasks: BackgroundTasks, reservation: Reservati
 
     if not check_reservation_availability(db, reservation.court_id, start_time, end_time):
         raise HTTPException(status_code=400, detail="The court is already reserved for the selected time slot.")
+    
+    # Obtener la previsión del tiempo
+    weather_data = get_weather_for_reservation(
+        court.latitude, court.longitude, reservation.reservation_time
+    )
+
+    print(f"🌦️ Weather data: {weather_data}")
+
+    # Inicializar variables por si falla la API
+    temp_c = condition_text = wind_kph = humidity = None
+
+    if weather_data:
+        temp_c = weather_data.get("temp_c")
+        condition_text = weather_data.get("condition", {}).get("text")
+        wind_kph = weather_data.get("wind_kph")
+        humidity = weather_data.get("humidity")
+
 
     db_reservation = Reservation(
         user_id=reservation.user_id,
         court_id=reservation.court_id,
         reservation_time=reservation.reservation_time,
-        customer_id=customer_id
+        customer_id=customer_id,
+        weather_temp_c=temp_c,
+        weather_condition_text=condition_text,
+        weather_wind_kph=wind_kph,
+        weather_humidity=humidity
     )
     db.add(db_reservation)
     db.commit()
@@ -174,13 +210,35 @@ def get_available_courts(customer_id: int, date: datetime, db: Session = Depends
     if not courts:
         raise HTTPException(status_code=404, detail="No courts found for the specified customer")
 
+    court_ids = [court.court_id for court in courts]
+    reviews_by_court = (
+        db.query(CourtReview)
+        .filter(CourtReview.court_id.in_(court_ids))
+        .all()
+    )
+
+
+    reviews_map = {}
+    for review in reviews_by_court:
+        reviews_map.setdefault(review.court_id, []).append(review)
+
     available_courts = []
     for court in courts:
         is_available = check_reservation_availability(db, court.court_id, start_time, end_time)
+        court_reviews = reviews_map.get(court.court_id, [])
+
+        if court_reviews:
+            avg_rating = sum(r.rating for r in court_reviews) / len(court_reviews)
+        else:
+            avg_rating = None
+
         available_courts.append(CourtAvailabilityResponse(
             court_id=court.court_id,
             court_name=court.name,
-            available=is_available
+            available=is_available,
+            average_rating=avg_rating,
+            review_count=len(court_reviews),
+            reviews=court_reviews
         ))
 
     return available_courts
