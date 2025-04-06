@@ -66,3 +66,34 @@ async def send_reminder_email(to_email: str, court_name: str, club_name: str, re
     fm = FastMail(conf)
     await fm.send_message(message)
     print(f"📩 Recordatorio enviado a {to_email}")
+
+
+# ✅ Función para enviar email de agradecimiento + link a la review
+async def send_thank_you_email(to_email: str, user_name: str, court_name: str, club_name: str, reservation_time: str, review_link: str):
+    email_body = f"""
+    ¡Hola {user_name}!
+
+    Esperamos que hayas disfrutado tu reserva en el club **{club_name}**.
+
+    🎾 **Pista:** {court_name}  
+    📅 **Fecha y hora:** {reservation_time}
+
+    Nos encantaría conocer tu opinión sobre la pista.  
+    👉 Puedes dejar tu valoración aquí: {review_link}
+
+    ¡Gracias por ayudarnos a mejorar!
+
+    Equipo del Club de Pádel
+    """
+
+    message = MessageSchema(
+        subject="🎾 ¿Qué te pareció tu reserva?",
+        recipients=[to_email],
+        body=email_body,
+        subtype="plain"
+    )
+
+    fm = FastMail(conf)
+    await fm.send_message(message)
+    print(f"✅ Email de agradecimiento y review enviado a {to_email}")
+

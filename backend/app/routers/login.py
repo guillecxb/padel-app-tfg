@@ -167,6 +167,7 @@ def get_user(user_id: str, db: Session = Depends(get_db), Authorize: AuthJWT = D
     return {
         "id": user.id,
         "name": user.name,
+        # "email": user.email,
         "role": user.role,
         "ob_id": 1,
         "service_vendor_id": None,
@@ -271,6 +272,7 @@ def get_users(db: Session = Depends(get_db)):
     users = db.query(
         User.id,
         User.name,
+        User.email,
         User.role,
         func.count(Reservation.id).label("active_reservations")
     ).outerjoin(Reservation, and_(
@@ -283,6 +285,7 @@ def get_users(db: Session = Depends(get_db)):
         UserResponseSchema2(
             id=user.id,
             name=user.name,
+            email=user.email,
             role=user.role,
             active_reservations=user.active_reservations
         )
@@ -335,6 +338,7 @@ def update_user(
     return UserResponseSchema2(
         id=user_to_update.id,
         name=user_to_update.name,
+        email=user_to_update.email,
         role=user_to_update.role,
         active_reservations=db.query(func.count(Reservation.id))
                               .filter(Reservation.user_id == user_to_update.id,
@@ -356,7 +360,7 @@ def create_user_test(
     print("Datos recibidos:", user.dict())
 
     # Crea el nuevo usuario con el rol especificado
-    db_user = User(name=user.name, password=user.password, role=user.role)
+    db_user = User(name=user.name, password=user.password, role=user.role, email=user.email)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -365,6 +369,7 @@ def create_user_test(
     return UserResponseSchema2(
         id=0,  # ID ficticio ya que no estamos interactuando con la base de datos
         name=user.name,
+        email=user.email,
         role=user.role,
         active_reservations=0  # Ficticio para cumplir con el esquema
     )
