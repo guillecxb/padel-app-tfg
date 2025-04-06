@@ -9,6 +9,8 @@ import { format } from 'date-fns';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useCustomersQuery } from "domain/accounts/apiSlices/customersApiSlice";
 import { ROUTES } from 'modules/app/router';
+import { Collapse, IconButton } from '@mui/material';
+import { ExpandMore, ExpandLess } from '@mui/icons-material';
 
 const Booking = () => {
   const location = useLocation();
@@ -26,6 +28,8 @@ const Booking = () => {
 
   const [createReservation] = useCreateReservationMutation();
   const { data: customersData, isLoading: loadingClubs } = useCustomersQuery();
+
+  const [expandedCourts, setExpandedCourts] = useState({});
 
   // Configuración de fechas y horas
   const today = new Date();
@@ -180,13 +184,58 @@ const Booking = () => {
 
                     {court.review_count > 0 ? (
                       <>
-                        <Typography variant="body2" sx={{ mt: 1 }}>⭐ {court.average_rating.toFixed(1)} / 5</Typography>
-                        <Typography variant="caption" sx={{ fontStyle: 'italic' }}>
-                          "{court.reviews[court.reviews.length - 1]?.comment}"
+                        <Typography variant="body2" sx={{ mt: 1 }}>
+                          ⭐ {court.average_rating.toFixed(1)} / 5
                         </Typography>
+
+                        {court.reviews.slice(0, expandedCourts[court.court_id] ? 5 : 1).map((review, idx) => (
+                          <Typography
+                            key={idx}
+                            variant="caption"
+                            sx={{ fontStyle: "italic", display: "block", mt: 1 }}
+                          >
+                            "{review.comment}"
+                          </Typography>
+                        ))}
+
+                        {/* Mostrar más / menos */}
+                        <Box
+                          sx={{
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            mt: 1,
+                          }}
+                        >
+                          <Typography
+                            variant="caption"
+                            color="text.secondary"
+                            sx={{ cursor: "pointer", fontSize: "0.75rem" }}
+                            onClick={() =>
+                              setExpandedCourts((prev) => ({
+                                ...prev,
+                                [court.court_id]: !prev[court.court_id],
+                              }))
+                            }
+                          >
+                            {expandedCourts[court.court_id] ? "Mostrar menos" : "Mostrar más"}
+                          </Typography>
+
+                          <IconButton
+                            size="small"
+                            onClick={() =>
+                              setExpandedCourts((prev) => ({
+                                ...prev,
+                                [court.court_id]: !prev[court.court_id],
+                              }))
+                            }
+                          >
+                            {expandedCourts[court.court_id] ? <ExpandLess /> : <ExpandMore />}
+                          </IconButton>
+                        </Box>
                       </>
                     ) : (
-                      <Typography variant="caption" sx={{ mt: 1, color: 'text.secondary' }}>
+                      <Typography variant="caption" sx={{ mt: 1, color: "text.secondary" }}>
                         Aún no hay comentarios disponibles
                       </Typography>
                     )}
