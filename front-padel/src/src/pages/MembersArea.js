@@ -22,6 +22,10 @@ import SectionTitle from "components/molecules/section-title/SectionTitle";
 import ReactAnimatedWeather from 'react-animated-weather';
 import { useMembersAreaTranslation } from "translations";
 import { useUpdateUserByIdMutation } from "domain/accounts/apiSlices/usersApiSlice";
+import { BigHead } from '@bigheads/core'
+import Lottie from "lottie-react"
+import animationData from "./animations/user-profile.json"
+
 
 
 const MembersAreaPage = () => {
@@ -139,7 +143,7 @@ const MembersAreaPage = () => {
     return { icon: 'CLEAR_DAY', color: 'yellow' }; 
   };
 
-  const { data: me, isLoading: isLoadingMe } = useGetMeQuery();  
+  const { data: me, isLoading: isLoadingMe, refetch: refetchMe } = useGetMeQuery();  
 
   const [formData, setFormData] = useState({ name: "", email: "", password: "" });
   const [updateUserById, { isLoading: isUpdating }] = useUpdateUserByIdMutation();
@@ -165,7 +169,9 @@ const MembersAreaPage = () => {
         email: formData.email,
         password: formData.password || undefined, // opcional
       }).unwrap();
-      setEditSuccess(true);
+      setEditDialogOpen(false);   // ✅ cerrar diálogo
+      refetchMe();                // ✅ refrescar los datos del perfil
+      setEditSuccess(true);       // opcional: mensaje de éxito
       setTimeout(() => setEditSuccess(false), 3000);
     } catch (error) {
       console.error("Error actualizando usuario", error);
@@ -188,66 +194,68 @@ const MembersAreaPage = () => {
             <Typography>Cargando perfil...</Typography>
           ) : me ? (
             <Paper
-  elevation={4}
-  sx={{
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    padding: 4,
-    borderRadius: 5,
-    backgroundColor: "#ffffff",
-    maxWidth: 700,
-    mx: "auto",
-    mt: 4,
-    boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
-  }}
->
-  {/* Avatar animado o imagen */}
-  <Box sx={{ mr: 4 }}>
-    <img
-      src="https://cdn-icons-png.flaticon.com/512/2922/2922510.png" // puedes reemplazar por uno animado con Lottie o SVG
-      alt="User Avatar"
-      width={120}
-      height={120}
-      style={{ borderRadius: "50%" }}
-    />
-  </Box>
+              elevation={4}
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                padding: 4,
+                borderRadius: 5,
+                backgroundColor: "#ffffff",
+                maxWidth: 800,
+                mx: "auto",
+                mt: 4,
+                boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+                gap: 4
+              }}
+            >
+              {/* Animación */}
+              <Box sx={{ width: 160, height: 160 }}>
+                <Lottie animationData={animationData} loop autoplay />
+              </Box>
 
-  {/* Campos del perfil */}
-  <Box sx={{ flex: 1 }}>
-    <Typography variant="h5" sx={{ mb: 1, fontWeight: 600 }}>
-      Mi perfil
-    </Typography>
-    <Typography variant="body1" sx={{ fontWeight: 500, mb: 0.5 }}>
-      Nombre:
-    </Typography>
-    <Typography variant="body2" sx={{ mb: 1 }}>
-      {me.name}
-    </Typography>
+              {/* Info del perfil */}
+              <Box sx={{ flex: 1 }}>
+                <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
+                  Mi perfil
+                </Typography>
 
-    <Typography variant="body1" sx={{ fontWeight: 500, mb: 0.5 }}>
-      Email:
-    </Typography>
-    <Typography variant="body2" sx={{ mb: 2 }}>
-      {me.email || "Sin email"}
-    </Typography>
+                <Box sx={{ display: "flex", mb: 2 }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 600, width: 90 }}>
+                    Nombre:
+                  </Typography>
+                  <Typography variant="body1">{me.name}</Typography>
+                </Box>
 
-    <Button
-      variant="contained"
-      size="medium"
-      onClick={() => setEditDialogOpen(true)}
-    >
-      Editar perfil
-    </Button>
-  </Box>
-</Paper>
+                <Box sx={{ display: "flex", mb: 3 }}>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 600, width: 90 }}>
+                    Email:
+                  </Typography>
+                  <Typography variant="body1">{me.email || "Sin email"}</Typography>
+                </Box>
 
-
+                <Button
+                  variant="contained"
+                  size="medium"
+                  onClick={() => setEditDialogOpen(true)}
+                  sx={{
+                    textTransform: "none",
+                    paddingX: 3,
+                    paddingY: 1,
+                    fontWeight: "bold",
+                    background: "linear-gradient(to right, #00c6ff, #0072ff)",
+                    borderRadius: 3
+                  }}
+                >
+                  Editar perfil
+                </Button>
+              </Box>
+            </Paper>
           ) : (
             <Typography>No se pudo cargar el perfil.</Typography>
           )}
         </Box>
       )}
+
 
 
       {activeTab === 1 && (
@@ -299,13 +307,29 @@ const MembersAreaPage = () => {
           {filteredReservations.length > 0 && (
             <Box sx={{ marginTop: 4 }}>
               <Grid container spacing={2}>
-                {paginatedReservations.map((reservation) => (
+              {paginatedReservations.map((reservation) => {
+                const isPast = new Date(reservation.reservation_time) < new Date();
+
+                return (
                   <Grid item xs={12} md={6} key={reservation.id}>
-                    <Paper sx={{ padding: 2, backgroundColor: "#f5f5f5", position: "relative" }}>
-                      <Typography variant="h6">{t("club")} {getClubName(reservation.customer_id)}</Typography>
-                      <Typography variant="body1">{t("court")} {reservation.court_id}</Typography>
+                    <Paper
+                      sx={{
+                        padding: 2,
+                        backgroundColor: isPast ? "#e0e0e0" : "#f5f5f5",
+                        position: "relative",
+                        opacity: isPast ? 0.6 : 1,
+                        pointerEvents: isPast ? "none" : "auto",
+                      }}
+                    >
+                      <Typography variant="h6">
+                        {t("club")} {getClubName(reservation.customer_id)}
+                      </Typography>
+                      <Typography variant="body1">
+                        {t("court")} {reservation.court_id}
+                      </Typography>
                       <Typography variant="body2">
-                      {t("dateAndTime")}{format(new Date(reservation.reservation_time), "dd/MM/yyyy HH:mm")}
+                        {t("dateAndTime")}
+                        {format(new Date(reservation.reservation_time), "dd/MM/yyyy HH:mm")}
                       </Typography>
 
                       {/* Mostrar el clima si está disponible */}
@@ -322,76 +346,43 @@ const MembersAreaPage = () => {
                               {reservation.weather.condition_text}
                             </Typography>
                             <Typography variant="body2">
-                            {t("temperature")}{reservation.weather.temp_c}°C, {t("wind")}{reservation.weather.wind_kph} km/h, {t("humidity")}{reservation.weather.humidity}%
+                              {t("temperature")}{reservation.weather.temp_c}°C,{" "}
+                              {t("wind")}{reservation.weather.wind_kph} km/h,{" "}
+                              {t("humidity")}{reservation.weather.humidity}%
                             </Typography>
                           </Box>
                         </Box>
                       ) : (
-                        <Typography variant="body2" color="text.secondary" sx={{ marginTop: 4 }}>
-                         {t("temperatureUnavailable")}
+                        <Typography
+                          variant="body2"
+                          color="text.secondary"
+                          sx={{ marginTop: 4 }}
+                        >
+                          {t("temperatureUnavailable")}
                         </Typography>
                       )}
 
-                      {/* Botón de eliminar reserva */}
-                      <IconButton
-                        onClick={() => handleDeleteDialogOpen(reservation)}
-                        sx={{ position: "absolute", top: 8, right: 8 }}
-                        color="error"
-                        disabled={isDeleting}
-                      >
-                        {isDeleting ? <CircularProgress size={24} /> : <DeleteIcon />}
-                      </IconButton>
+                      {/* Botón de eliminar reserva SOLO si no es pasada */}
+                      {!isPast && (
+                        <IconButton
+                          onClick={() => handleDeleteDialogOpen(reservation)}
+                          sx={{ position: "absolute", top: 8, right: 8 }}
+                          color="error"
+                          disabled={isDeleting}
+                        >
+                          {isDeleting ? (
+                            <CircularProgress size={24} />
+                          ) : (
+                            <DeleteIcon />
+                          )}
+                        </IconButton>
+                      )}
                     </Paper>
                   </Grid>
-                ))}
+                );
+              })}
+
               </Grid>
-              {/* <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 4 }}>
-                <FormControl size="small" sx={{ minWidth: 120 }}>
-                  <InputLabel id="rows-per-page-label">Por página</InputLabel>
-                  <Select
-                    labelId="rows-per-page-label"
-                    value={reservationsPerPage}
-                    label="Por página"
-                    onChange={(e) => setReservationsPerPage(parseInt(e.target.value))}
-                  >
-                    <MenuItem value={2}>2</MenuItem>
-                    <MenuItem value={4}>4</MenuItem>
-                    <MenuItem value={6}>6</MenuItem>
-                    <MenuItem value={8}>8</MenuItem>
-                  </Select>
-                </FormControl>
-
-                <Box sx={{ display: "flex", justifyContent: "flex-end" }}>
-                  <Button
-                    variant="outlined"
-                    disabled={currentPage === 1}
-                    onClick={() => setCurrentPage(prev => prev - 1)}
-                    sx={{ mr: 1 }}
-                  >
-                    Anterior
-                  </Button>
-                  <Typography sx={{ display: "flex", alignItems: "center" }}>
-                    Página {currentPage} de {totalPages}
-                  </Typography>
-                  <Button
-                    variant="outlined"
-                    disabled={currentPage === totalPages}
-                    onClick={() => setCurrentPage(prev => prev + 1)}
-                    sx={{ ml: 1 }}
-                  >
-                    Siguiente
-                  </Button>
-                </Box>
-              </Box> */}
-
-
-
-              {/* <Pagination
-                count={totalPages}
-                page={currentPage}
-                onChange={(e, value) => setCurrentPage(value)}
-                color="primary"
-              /> */}
 
               <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", mt: 4, gap: 2 }}>
                 <Pagination
@@ -445,10 +436,31 @@ const MembersAreaPage = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      <Dialog open={editDialogOpen} onClose={() => setEditDialogOpen(false)}>
+
+      {/* Diálogo de edición de perfil */}
+      <Dialog
+        open={editDialogOpen}
+        onClose={() => setEditDialogOpen(false)}
+        maxWidth="sm" // Puedes usar "md" si quieres aún más ancho
+        fullWidth
+      >
         <DialogTitle>Editar Perfil</DialogTitle>
-        <DialogContent>
-          <Box component="form" sx={{ mt: 1, display: "flex", flexDirection: "column", gap: 2 }}>
+
+        <DialogContent
+          sx={{
+            px: 4, // más padding horizontal
+            py: 2,
+          }}
+        >
+          <Box
+            component="form"
+            sx={{
+              mt: 1,
+              display: "flex",
+              flexDirection: "column",
+              gap: 2,
+            }}
+          >
             <TextField
               label="Nombre"
               name="name"
@@ -473,7 +485,8 @@ const MembersAreaPage = () => {
             />
           </Box>
         </DialogContent>
-        <DialogActions>
+
+        <DialogActions sx={{ px: 3, pb: 2 }}>
           <Button onClick={() => setEditDialogOpen(false)} color="secondary">
             Cancelar
           </Button>

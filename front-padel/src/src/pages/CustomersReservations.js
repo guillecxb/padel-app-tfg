@@ -21,6 +21,8 @@ import SectionTitle from "components/molecules/section-title/SectionTitle";
 import { format } from "date-fns";
 import { renderActionsCell, renderCopyCell } from "modules/common/tables/cells";
 import { ROUTES } from 'modules/app/router';
+import { FormControlLabel, Checkbox, FormControl } from "@mui/material";
+import { InputLabel, Select, MenuItem } from "@mui/material";
 
 const Booking = () => {
   const { customerId } = useParams();
@@ -36,6 +38,8 @@ const Booking = () => {
   const [deleteId, setDeleteId] = useState(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
+  const [showPastReservations, setShowPastReservations] = useState(false);
+
 
   // Actualiza las filas cuando cambian las reservas
   useEffect(() => {
@@ -102,7 +106,7 @@ const Booking = () => {
         },
       },
       {
-        name: "customer_id",
+        name: "user_id",
         label: "ID client",
         options: {
           customBodyRender: renderCopyCell,
@@ -112,19 +116,53 @@ const Booking = () => {
         name: "actions",
         label: "Acciones",
         options: {
-          customBodyRender: (_value, { rowData }) =>
-            renderActionsCell({
-              id: rowData[0],
-              handleDelete: handleDeleteClick,
-            }),
+          customBodyRender: (_value, tableMeta) => {
+            const rawDate = tableMeta.rawRow.reservation_time;
+            const isPast = new Date(rawDate) < new Date();
+      
+            return isPast ? (
+              <Typography variant="body2" color="text.disabled">
+                (Reserva pasada)
+              </Typography>
+            ) : (
+              renderActionsCell({
+                id: tableMeta.rowData[0],
+                handleDelete: handleDeleteClick,
+              })
+            );
+          },
           filter: false,
           sort: false,
           hideLabel: true,
         },
-      },
+      }
     ],
     [handleDeleteClick]
   );
+
+  const [sortOrder, setSortOrder] = useState("desc"); // "asc" o "desc"
+
+  useEffect(() => {
+    const now = new Date();
+  
+    let filtered = showPastReservations
+      ? reservations
+      : reservations.filter((res) => new Date(res.reservation_time) >= now);
+
+    // Aplica orden
+    filtered = filtered.slice().sort((a, b) => {
+      const dateA = new Date(a.reservation_time);
+      const dateB = new Date(b.reservation_time);
+      return sortOrder === "asc" ? dateA - dateB : dateB - dateA;
+    });
+  
+    setSearchRows(filtered);
+  }, [reservations, showPastReservations, sortOrder]);
+
+
+  
+
+  
 
   return (
     <div data-testid="reservations-dashboard-page">
@@ -169,6 +207,34 @@ const Booking = () => {
             </Box>
           </Stack>
         </Box>
+        <Box display="flex" alignItems="center" justifyContent="space-between" mb={2} flexWrap="wrap" gap={2}>
+  <FormControlLabel
+    control={
+      <Checkbox
+        checked={showPastReservations}
+        onChange={() => setShowPastReservations(!showPastReservations)}
+        color="primary"
+      />
+    }
+    label="Mostrar reservas pasadas"
+  />
+
+  <FormControl size="small" sx={{ minWidth: 200 }}>
+    <InputLabel id="sort-order-label">Ordenar por</InputLabel>
+    <Select
+      labelId="sort-order-label"
+      id="sort-order"
+      value={sortOrder}
+      label="Ordenar por"
+      onChange={(e) => setSortOrder(e.target.value)}
+    >
+      <MenuItem value="desc">Más recientes primero</MenuItem>
+      <MenuItem value="asc">Más antiguas primero</MenuItem>
+    </Select>
+  </FormControl>
+</Box>
+
+
         <DataTable
           columns={columns}
           data={error?.status === 404 ? [] : filteredRows}

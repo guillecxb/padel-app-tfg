@@ -167,7 +167,7 @@ def get_user(user_id: str, db: Session = Depends(get_db), Authorize: AuthJWT = D
     return {
         "id": user.id,
         "name": user.name,
-        # "email": user.email,
+        "email": user.email,
         "role": user.role,
         "ob_id": 1,
         "service_vendor_id": None,

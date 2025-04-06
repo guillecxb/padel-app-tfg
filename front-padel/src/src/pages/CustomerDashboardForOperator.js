@@ -47,6 +47,12 @@ const Dashboard = () => {
   const pistasOcupadas = availableCourts.filter((pista) => !pista.available).length;
   const pistasDisponibles = availableCourts.filter((pista) => pista.available).length;
 
+  const now = new Date();
+  const limit = new Date(now.getTime() - 90 * 60 * 1000); // ahora - 1h30
+  const reservasFuturas = reservations.filter(res =>
+    new Date(res.reservation_time) >= limit
+  );
+
   return (
     <Box sx={{ padding: 4 }}>
       <Typography variant="h4" gutterBottom>
@@ -74,7 +80,7 @@ const Dashboard = () => {
         <Grid item xs={12} md={4}>
           <Paper sx={{ padding: 3, textAlign: "center" }}>
             <Typography variant="h6">Total Reservas</Typography>
-            <Typography variant="h4">{reservations.length}</Typography>
+            <Typography variant="h4">{reservasFuturas.length}</Typography>
           </Paper>
         </Grid>
       </Grid>

@@ -9,7 +9,7 @@ class CourtReview(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     court_id = Column(Integer, ForeignKey("courts.court_id"))
-    user_id = Column(Integer, ForeignKey("users.id"))
+    user_id = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
     reservation_id = Column(Integer, ForeignKey("reservations.id"))
 
     rating = Column(Integer)  # 1 to 5
