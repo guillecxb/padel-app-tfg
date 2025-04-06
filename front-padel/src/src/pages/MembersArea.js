@@ -17,6 +17,7 @@ const MembersAreaPage = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [reservationToDelete, setReservationToDelete] = useState(null);
   const POLLING_INTERVAL = 10000;
+  const [showPastReservations, setShowPastReservations] = useState(false);
 
   const t = useMembersAreaTranslation();
 
@@ -25,6 +26,13 @@ const MembersAreaPage = () => {
     { user_id: userId }, 
     { pollingInterval: POLLING_INTERVAL }
   );
+
+  const now = new Date();
+
+  const filteredReservations = showPastReservations
+    ? reservations
+    : reservations.filter(res => new Date(res.reservation_time) > now);
+
 
   const [deleteReservation, { isLoading: isDeleting }] = useDeleteReservationMutation();
   const navigate = useNavigate();
@@ -112,6 +120,14 @@ const MembersAreaPage = () => {
               {t("createReservation")}
             </Button>
           </Box>
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2, mb: 2 }}>
+            <Typography>Mostrar también reservas pasadas</Typography>
+            <input
+              type="checkbox"
+              checked={showPastReservations}
+              onChange={() => setShowPastReservations(!showPastReservations)}
+            />
+          </Box>
 
           {isLoading && <Typography>{t("loadingReservations")}</Typography>}
           {error && <Typography>{t("errorLoadingReservations")}</Typography>}
@@ -120,10 +136,13 @@ const MembersAreaPage = () => {
             <Typography>{t("noReservations")}</Typography>
           )}
 
-          {reservations.length > 0 && (
+
+          
+
+          {filteredReservations.length > 0 && (
             <Box sx={{ marginTop: 4 }}>
               <Grid container spacing={2}>
-                {reservations.map((reservation) => (
+                {filteredReservations.map((reservation) => (
                   <Grid item xs={12} md={6} key={reservation.id}>
                     <Paper sx={{ padding: 2, backgroundColor: "#f5f5f5", position: "relative" }}>
                       <Typography variant="h6">{t("club")} {getClubName(reservation.customer_id)}</Typography>

@@ -27,6 +27,7 @@ export const ROUTES = {
   reservations: "/reservations",
   reservationsAdd: "/reservations/add",
   reservationDetails: "/reservations/:id",
+  review: "/review",
   store: "/store",
   asCustomerStore: "/customer/:customerId/store",
   news: "/news",
