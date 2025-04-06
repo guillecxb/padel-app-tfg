@@ -18,6 +18,7 @@
     "username": "Nombre de usuario",
     "usernameHelper": "Debe tener al menos 5 caracteres.",
     "password": "Contraseña",
+    "email": "Correo electrónico",
     "passwordHelper": "Debe tener al menos 8 caracteres, una letra mayúscula, un número y un símbolo !%*#?&.",
     "operator": "Tipo de operador"
   },

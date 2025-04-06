@@ -18,12 +18,14 @@
   "validations": {
     "name": "Name",
     "password": "Password",
-    "role": "Role"
+    "role": "Role",
+    "email": "Email"
   },
   "fields": {
     "name": "Name",
     "password": "Password",
     "role": "Role",
+    "email": "Email",
     "customer": "Customer",
     "operator": "Operator",
     "roleHelperText": "Select the role of the user"
