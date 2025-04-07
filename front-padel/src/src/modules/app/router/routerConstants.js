@@ -27,7 +27,7 @@ export const ROUTES = {
   reservations: "/reservations",
   reservationsAdd: "/reservations/add",
   reservationDetails: "/reservations/:id",
-  review: "/review",
+  review: "/members-area/review",
   store: "/store",
   asCustomerStore: "/customer/:customerId/store",
   news: "/news",

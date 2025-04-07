@@ -1,20 +1,35 @@
 import { useSearchParams } from 'react-router-dom';
 import { useState } from 'react';
-import { Box, Button, Rating, TextField, Typography } from '@mui/material';
-import { useCreateReviewMutation } from 'domain/service/apiSlices/bookingApiSlice';
+import {
+  Box,
+  Button,
+  Rating,
+  TextField,
+  Typography,
+  CircularProgress,
+} from '@mui/material';
+import { useCreateReviewMutation, useGetUserReservationsQuery } from 'domain/service/apiSlices/bookingApiSlice';
+import { useSelector } from 'react-redux';
+import { getMe } from 'domain/accounts/slices/authSlice';
+import { useNavigate } from 'react-router-dom';
+import { format } from 'date-fns';
 
 export default function ReviewForm() {
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
 
+  const { id: userId } = useSelector(getMe);
   const reservationId = searchParams.get("reservation_id");
   const courtId = searchParams.get("court_id");
-  const userId = searchParams.get("user_id");
-  const courtName = searchParams.get("court_name");
-  const clubName = searchParams.get("club_name");
 
   const [rating, setRating] = useState(5);
   const [comment, setComment] = useState("");
+  const [showThanks, setShowThanks] = useState(false);
   const [createReview] = useCreateReviewMutation();
+
+  const { data: reservations = [], isLoading, error } = useGetUserReservationsQuery({ user_id: userId });
+
+  const reservation = reservations.find(res => res.id === parseInt(reservationId));
 
   const handleSubmit = async () => {
     try {
@@ -25,22 +40,50 @@ export default function ReviewForm() {
         rating,
         comment
       });
-      alert("¡Gracias por tu reseña!");
+      setShowThanks(true);
     } catch (error) {
       alert("Ocurrió un error al enviar la reseña.");
       console.error(error);
     }
   };
 
-  // 🏷️ Mapeo de club name a ciudad
-  const clubCityMap = {
-    "Club Padel A": "Valladolid",
-    "Club Padel B": "Palencia",
-    "Club Padel C": "Madrid"
-  };
+  if (isLoading || !reservation) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 10 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
-  const decodedClubName = decodeURIComponent(clubName || "");
-  const clubCity = clubCityMap[decodedClubName] || decodedClubName;
+  if (showThanks) {
+    return (
+      <Box sx={{ p: 4, maxWidth: 600, mx: "auto", textAlign: 'center' }}>
+        <Typography variant="h4" gutterBottom>
+          ¡Gracias por tu opinión!
+        </Typography>
+        <Typography variant="body1" sx={{ mb: 4 }}>
+          Tu reseña nos ayuda a mejorar la experiencia para todos.
+        </Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          size="large"
+          onClick={() => navigate("/")}
+        >
+          Volver al inicio
+        </Button>
+      </Box>
+    );
+  }
+
+  // 🏷️ Mapeo de ID de customer a ciudad del club
+const customerCityMap = {
+  1: "Club Padel A: Valladolid",
+  2: "Club Padel B: Palencia",
+  3: "Club Padel C: Madrid"
+};
+
+const clubCity = customerCityMap[reservation.customer_id] || "Club desconocido";
 
   return (
     <Box sx={{ p: 4, maxWidth: 600, mx: "auto" }}>
@@ -48,19 +91,19 @@ export default function ReviewForm() {
         Valora tu experiencia
       </Typography>
 
-      {clubCity && (
-        <Typography variant="body1" sx={{ mb: 1 }}>
-          Ciudad del Club: <strong>{clubCity}</strong>
-        </Typography>
-      )}
+      <Typography variant="body1" sx={{ mb: 1 }}>
+        Club: <strong>{clubCity}</strong>
+      </Typography>
 
-      {courtName && (
-        <Typography variant="body1" sx={{ mb: 3 }}>
-          Pista: <strong>{`Pista ${courtName}`}</strong>
-        </Typography>
-      )}
+      <Typography variant="body1" sx={{ mb: 1 }}>
+        Pista: <strong>{`Pista ${reservation.court_id}`}</strong>
+      </Typography>
 
-      <Typography variant="body2" sx={{ mb: 1 }}>Valoración:</Typography>
+      <Typography variant="body1" sx={{ mb: 1 }}>
+        Fecha: <strong>{format(new Date(reservation.reservation_time), "dd/MM/yyyy HH:mm")}</strong>
+      </Typography>
+
+      <Typography variant="body2" sx={{ mt: 3, mb: 1 }}>Valoración:</Typography>
       <Rating value={rating} onChange={(e, value) => setRating(value)} />
 
       <TextField

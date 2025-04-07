@@ -93,7 +93,7 @@ async def check_and_send_review_requests():
 
         if user and court and customer:
             print(f"📩 Enviando email de review a {user.email} por la pista {court.name}")
-            review_link = f"http://localhost:3000/review?reservation_id={reservation.id}&court_id={court.court_id}"
+            review_link = f"http://localhost:3000/members-area/review?reservation_id={reservation.id}&court_id={court.court_id}"
 
             await send_thank_you_email(
                 user.email,

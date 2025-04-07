@@ -27,6 +27,8 @@ import MuisticaIcon from "components/atoms/muistica-icon/MuisticaIcon";
 
 import { useLoginTranslation, useValidationTranslation } from "translations";
 
+import { useLocation } from "react-router-dom";
+
 export const LoginForm = () => {
   const t = useLoginTranslation();
   const vt = useValidationTranslation();
@@ -38,15 +40,23 @@ export const LoginForm = () => {
   const [signIn] = useSignIn1Mutation();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = location.state?.from?.pathname
+    ? location.state.from.pathname + location.state.from.search
+    : ROUTES.home;
   const [openDialog, setOpenDialog] = useState(false);
   const [openDialogForgot, setOpenDialogForgot] = useState(false);
 
   const handleSubmit = async (values) => {
     const { login, password, rememberMe } = values;
-
-    const tokenData = await signIn({ login, password }).unwrap();
-    dispatch(setCredentials({ ...tokenData, rememberMe }));
-    navigate(ROUTES.home);
+  
+    try {
+      const tokenData = await signIn({ login, password }).unwrap();
+      dispatch(setCredentials({ ...tokenData, rememberMe }));
+      navigate(from, { replace: true });
+    } catch (error) {
+      console.error("Login failed:", error);
+    }
   };
 
   const toggleShow = () => {
@@ -76,7 +86,6 @@ export const LoginForm = () => {
       entity={entity}
       errorOn="alert"
       onSubmit={handleSubmit}
-      onSubmitSuccess={() => navigate(ROUTES.home)}
       translationKey="login"
       validation={validation}
     >
