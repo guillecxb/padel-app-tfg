@@ -22,6 +22,10 @@ services:
       - db
     environment:
       DATABASE_URL: "postgresql://user:password@db/dbname"
+      TZ: Europe/Madrid
+    volumes:
+      - /etc/timezone:/etc/timezone:ro
+      - /etc/localtime:/etc/localtime:ro
 
   pgadmin:
     image: dpage/pgadmin4

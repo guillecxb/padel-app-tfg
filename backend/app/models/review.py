@@ -3,6 +3,7 @@ from sqlalchemy import Column, Integer, ForeignKey, String, DateTime
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from db.database import Base
+from zoneinfo import ZoneInfo
 
 class CourtReview(Base):
     __tablename__ = "court_reviews"
@@ -14,7 +15,7 @@ class CourtReview(Base):
 
     rating = Column(Integer)  # 1 to 5
     comment = Column(String, nullable=True)
-    created_at = Column(DateTime, default=datetime.utcnow)
+    created_at = Column(DateTime, default=datetime.now(ZoneInfo("Europe/Madrid")))
 
     court = relationship("Court", back_populates="reviews")
     user = relationship("User")

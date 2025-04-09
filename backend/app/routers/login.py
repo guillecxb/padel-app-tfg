@@ -15,6 +15,7 @@ from services.auth_utils import require_role
 from sqlalchemy import func, and_
 from datetime import datetime
 from models.reservation import Reservation
+from zoneinfo import ZoneInfo
 
 router = APIRouter()
 
@@ -277,7 +278,7 @@ def get_users(db: Session = Depends(get_db)):
         func.count(Reservation.id).label("active_reservations")
     ).outerjoin(Reservation, and_(
         Reservation.user_id == User.id,
-        Reservation.reservation_time > datetime.utcnow()  # Considera solo reservas futuras
+        Reservation.reservation_time > datetime.now(ZoneInfo("Europe/Madrid")) # Considera solo reservas futuras
     )).group_by(User.id).all()
 
     # Convierte los resultados en el formato esperado por el esquema `UserListResponseSchema`
@@ -342,7 +343,7 @@ def update_user(
         role=user_to_update.role,
         active_reservations=db.query(func.count(Reservation.id))
                               .filter(Reservation.user_id == user_to_update.id,
-                                      Reservation.reservation_time > datetime.utcnow())
+                                      Reservation.reservation_time > datetime.now(ZoneInfo("Europe/Madrid")))
                               .scalar()
     )
 
