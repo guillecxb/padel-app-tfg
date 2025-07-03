@@ -1,43 +1,57 @@
-# Contiene los modelos de datos que voy a utilizar en la aplicación.
-# Pydantic es una libreria de validación y serialización de datos que permite definir los modelos de datos de la aplicación.
-
 # app/models/reservation.py
-from pydantic import BaseModel, validator, conint
-from typing import Optional
+from pydantic import BaseModel
+from typing import List, Optional
 from datetime import datetime
+from schemas.review import CourtReviewResponse
 
-# Definir el validador una vez, fuera de los modelos
-@validator('court_id', allow_reuse=True)
-def check_court_id(cls, v):
-    if v is not None and (v < 1 or v > 12):
-        raise ValueError('court_id must be between 1 and 12 or None')
-    return v
 
-# clase que define el modelod de datos para una reserva, hereda de BaseModel, lo que permite a Pydantic validar y serializar los datos
-class ReservationSchema(BaseModel):
+class ReservationCreate(BaseModel):
+    user_id: int
+    customer_id: int  # Ahora el customer_id se pasa explícitamente
     court_id: int
-    start_time: datetime
-    end_time: datetime
+    reservation_time: datetime
 
-    # Reutilizar el validador en este modelo
-    _check_court_id = check_court_id
+class WeatherInfo(BaseModel):
+    temp_c: Optional[float]
+    condition_text: Optional[str]
+    wind_kph: Optional[float]
+    humidity: Optional[int]
 
-    # clase config para añadir metadatos a la definición del modelo, util para la documentación que ofrece FastAPI
+class ReservationResponse(BaseModel):
+    id: int
+    user_id: int
+    court_id: int
+    reservation_time: datetime
+    customer_id: int
+    weather: Optional[WeatherInfo] = None
+
     class Config:
-        schema_extra = {
-            "example": {
-                "court_id": 1,
-                "start_time": "2024-03-20T09:00:00",
-                "end_time": "2024-03-20T10:30:00"
-            }
-        }
+        orm_mode = True
 
-# clase que define el modelo de datos para actualizar una reserva, hereda de BaseModel, todos los campos son opcionales
-class UpdateReservationModel(BaseModel):
-    court_id: Optional[int] = None
-    start_time: Optional[datetime] = None
-    end_time: Optional[datetime] = None
+class CourtAvailabilityResponse(BaseModel):
+    court_id: int
+    court_name: str
+    available: bool
+    average_rating: Optional[float] = None
+    review_count: int
+    reviews: List[CourtReviewResponse] = []  # 🆕 reviews detalladas
 
-    # Reutilizar el validador en este modelo también
-    _check_court_id = check_court_id
+    class Config:
+        orm_mode = True
 
+class ReservationCountByCourtResponse(BaseModel):
+    court_id: int
+    court_name: str
+    reservation_count: int
+
+    class Config:
+        orm_mode = True
+
+
+class ReviewOut(BaseModel):
+    id: int
+    user_id: int
+    rating: int
+    comment: Optional[str]
+    class Config:
+        orm_mode = True

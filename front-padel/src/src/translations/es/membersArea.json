@@ -20,6 +20,25 @@
     "confirmDeletion2": "en la pista",
     "confirmDeletion3": "para la fecha y hora",
     "cancel": "Cancelar",
-    "delete": "Eliminar"
-  }
+    "delete": "Eliminar",
+    "membersArea": "Área de miembros",
+    "myProfile": "Mi perfil",
+    "loadingProfile": "Cargando perfil...",
+    "noProfile": "No se pudo cargar el perfil.",
+    "editProfile": "Editar perfil",
+    "nameLabel": "Nombre",
+    "emailLabel": "Correo electrónico",
+    "noEmail": "Sin correo",
+    "newPasswordLabel": "Nueva contraseña",
+    "save": "Guardar",
+    "saving": "Guardando...",
+    "showPastReservations": "Mostrar reservas pasadas",
+    "sortBy": "Ordenar por",
+    "mostRecentFirst": "Más recientes primero",
+    "oldestFirst": "Más antiguas primero",
+    "rowsPerPage": "Por página",
+    "availableClasses": "Clases disponibles",
+    "editProfileTitle": "Editar perfil"
+}
+
   

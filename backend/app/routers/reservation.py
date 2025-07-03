@@ -2,79 +2,24 @@ from fastapi import APIRouter, Depends, HTTPException, Query, BackgroundTasks
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, func
 from services.weather_service import get_weather_for_reservation
-from db.database import SessionLocal
 from models.reservation import Reservation
 from models.user import User
 from models.court import Court
 from models.customer import Customer
-from pydantic import BaseModel
 from datetime import datetime, timedelta
 from typing import List, Optional
 from services.email_service import send_email
-import asyncio
 from models.review import CourtReview
-from schemas.review import CourtReviewResponse  # asegúrate de importar esto
+from schemas.reservation import ReservationResponse, ReservationCreate, WeatherInfo, CourtAvailabilityResponse, ReservationCountByCourtResponse
+
+
+from dependencies.database import get_db # Dependencia para obtener la sesión de la base de datos
 
 
 router = APIRouter()
 
-class ReservationCreate(BaseModel):
-    user_id: int
-    customer_id: int  # Ahora el customer_id se pasa explícitamente
-    court_id: int
-    reservation_time: datetime
-
-class WeatherInfo(BaseModel):
-    temp_c: Optional[float]
-    condition_text: Optional[str]
-    wind_kph: Optional[float]
-    humidity: Optional[int]
-
-class ReservationResponse(BaseModel):
-    id: int
-    user_id: int
-    court_id: int
-    reservation_time: datetime
-    customer_id: int
-    weather: Optional[WeatherInfo] = None
-
-    class Config:
-        orm_mode = True
-
-class CourtAvailabilityResponse(BaseModel):
-    court_id: int
-    court_name: str
-    available: bool
-    average_rating: Optional[float] = None
-    review_count: int
-    reviews: List[CourtReviewResponse] = []  # 🆕 reviews detalladas
-
-    class Config:
-        orm_mode = True
-
-class ReservationCountByCourtResponse(BaseModel):
-    court_id: int
-    court_name: str
-    reservation_count: int
-
-    class Config:
-        orm_mode = True
 
 
-class ReviewOut(BaseModel):
-    id: int
-    user_id: int
-    rating: int
-    comment: Optional[str]
-    class Config:
-        orm_mode = True
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 def check_reservation_availability(db: Session, court_id: int, start_time: datetime, end_time: datetime) -> bool:
     overlapping_reservations = db.query(Reservation).filter(

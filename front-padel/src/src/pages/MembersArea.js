@@ -180,8 +180,7 @@ const MembersAreaPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <SectionTitle data-testid="section-title" title={"Members Area"} />
-
+      <SectionTitle data-testid="section-title" title={t("membersArea")} />
       <Tabs value={activeTab} onChange={handleChange} aria-label="members area tabs">
         <Tab label={t("profile")} />
         <Tab label={t("reservations")} />
@@ -189,9 +188,9 @@ const MembersAreaPage = () => {
 
       {activeTab === 0 && (
         <Box sx={{ padding: 4 }}>
-          <SectionTitle title="My Profile" />
+          <SectionTitle title={t("myProfile")} />
           {isLoadingMe ? (
-            <Typography>Cargando perfil...</Typography>
+            <Typography>{t("loadingProfile")}</Typography>
           ) : me ? (
             <Paper
               elevation={4}
@@ -216,21 +215,21 @@ const MembersAreaPage = () => {
               {/* Info del perfil */}
               <Box sx={{ flex: 1 }}>
                 <Typography variant="h5" sx={{ mb: 3, fontWeight: 600 }}>
-                  Mi perfil
+                  {t("myProfile")}
                 </Typography>
 
                 <Box sx={{ display: "flex", mb: 2 }}>
                   <Typography variant="subtitle1" sx={{ fontWeight: 600, width: 90 }}>
-                    Nombre:
+                    {t("nameLabel")} 
                   </Typography>
                   <Typography variant="body1">{me.name}</Typography>
                 </Box>
 
                 <Box sx={{ display: "flex", mb: 3 }}>
                   <Typography variant="subtitle1" sx={{ fontWeight: 600, width: 90 }}>
-                    Email:
+                    {t("emailLabel")}
                   </Typography>
-                  <Typography variant="body1">{me.email || "Sin email"}</Typography>
+                  <Typography variant="body1">{me.email || t("noEmail")}</Typography>
                 </Box>
 
                 <Button
@@ -246,12 +245,12 @@ const MembersAreaPage = () => {
                     borderRadius: 3
                   }}
                 >
-                  Editar perfil
+                  {t("editProfile")}
                 </Button>
               </Box>
             </Paper>
           ) : (
-            <Typography>No se pudo cargar el perfil.</Typography>
+            <Typography>{t("noProfile")}</Typography>
           )}
         </Box>
       )}
@@ -278,10 +277,10 @@ const MembersAreaPage = () => {
                   color="primary"
                 />
               }
-              label="Mostrar reservas pasadas"
+              label={t("showPastReservations")}
             />
             <FormControl size="small">
-              <InputLabel id="sort-label">Ordenar por</InputLabel>
+              <InputLabel id="sort-label">{t("sortBy")}</InputLabel>
               <Select
                 labelId="sort-label"
                 id="sort-select"
@@ -289,8 +288,8 @@ const MembersAreaPage = () => {
                 label="Ordenar por"
                 onChange={(e) => setSortOrder(e.target.value)}
               >
-                <MenuItem value="desc">Más recientes primero</MenuItem>
-                <MenuItem value="asc">Más antiguas primero</MenuItem>
+                <MenuItem value="desc">{t("mostRecentFirst")}</MenuItem>
+                <MenuItem value="asc">{t("oldestFirst")}</MenuItem>
               </Select>
             </FormControl>
           </Box>
@@ -393,12 +392,12 @@ const MembersAreaPage = () => {
                 />
 
                 <FormControl size="small" sx={{ minWidth: 120 }}>
-                  <InputLabel id="rows-per-page-label">Por página</InputLabel>
+                  <InputLabel id="rows-per-page-label">{t("rowsPerPage")}</InputLabel>
                   <Select
                     labelId="rows-per-page-label"
                     id="rows-per-page"
                     value={reservationsPerPage}
-                    label="Por página"
+                    label={t("rowsPerPage")}
                     onChange={(e) => setReservationsPerPage(parseInt(e.target.value))}
                   >
                     <MenuItem value={8}>8</MenuItem>
@@ -444,7 +443,7 @@ const MembersAreaPage = () => {
         maxWidth="sm" // Puedes usar "md" si quieres aún más ancho
         fullWidth
       >
-        <DialogTitle>Editar Perfil</DialogTitle>
+        <DialogTitle>{t("editProfileTitle")}</DialogTitle>
 
         <DialogContent
           sx={{
@@ -488,7 +487,7 @@ const MembersAreaPage = () => {
 
         <DialogActions sx={{ px: 3, pb: 2 }}>
           <Button onClick={() => setEditDialogOpen(false)} color="secondary">
-            Cancelar
+            {t("cancel")}
           </Button>
           <Button
             onClick={handleSubmit}
@@ -496,7 +495,7 @@ const MembersAreaPage = () => {
             variant="contained"
             disabled={isUpdating}
           >
-            {isUpdating ? "Guardando..." : "Guardar"}
+            {isUpdating ? t("saving") : t("save")}
           </Button>
         </DialogActions>
       </Dialog>

@@ -5,9 +5,8 @@ from fastapi import Request
 from datetime import timedelta
 from pydantic import BaseSettings
 from sqlalchemy.orm import Session
-from fastapi_jwt_auth.exceptions import JWTDecodeError
+from fastapi_jwt_auth.exceptions import JWTDecodeError, MissingTokenError
 from typing import List
-from db.database import SessionLocal
 from models.user import User
 from schemas.user import UserResponseSchema, UserCreateSchema, UserListResponseSchema, UserResponseSchema2, UserUpdateSchema
 import logging 
@@ -16,6 +15,9 @@ from sqlalchemy import func, and_
 from datetime import datetime
 from models.reservation import Reservation
 from zoneinfo import ZoneInfo
+from dependencies.auth import jwt_required
+
+from dependencies.database import get_db # Dependencia para obtener la sesión de la base de datos
 
 router = APIRouter()
 
@@ -25,13 +27,6 @@ class Settings(BaseSettings):
 @AuthJWT.load_config
 def get_config():
     return Settings()
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 @router.post('/login')
 def login(name: str = Form(...), password: str = Form(...), db: Session = Depends(get_db), Authorize: AuthJWT = Depends()):
@@ -243,27 +238,49 @@ def get_me(Authorize: AuthJWT = Depends()):
     }
 
 # Endpointde prueba protegido para operadores
+# @router.get('/protected-endpoint')
+# def protected_endpoint(Authorize: AuthJWT = Depends()):
+#     # Requiere que el usuario esté autenticado
+#     Authorize.jwt_required()
+
+#     # Obtiene los claims del JWT, incluyendo el rol
+#     claims = Authorize.get_raw_jwt()
+#     user_role = claims["role"]
+
+#     # Verifica el rol del usuario
+#     if user_role != "operator":
+#         raise HTTPException(status_code=403, detail="Access forbidden: Admins only")
+
+#     return {"message": "Welcome, admin!"}
+
 @router.get('/protected-endpoint')
-def protected_endpoint(Authorize: AuthJWT = Depends()):
-    # Requiere que el usuario esté autenticado
-    Authorize.jwt_required()
-
-    # Obtiene los claims del JWT, incluyendo el rol
+def protected_endpoint(
+    _: None = Depends(jwt_required),  # Verifica token
+    Authorize: AuthJWT = Depends()
+):
     claims = Authorize.get_raw_jwt()
-    user_role = claims["role"]
+    user_role = claims.get("role")
 
-    # Verifica el rol del usuario
     if user_role != "operator":
         raise HTTPException(status_code=403, detail="Access forbidden: Admins only")
 
     return {"message": "Welcome, admin!"}
 
+# @router.get('/admin-only-endpoint')
+# def admin_only_endpoint(Authorize: AuthJWT = Depends()):
+#     # Llama a la función require_role con el rol "admin"
+#     require_role("operator", Authorize)
+
+#     # Código del endpoint solo accesible para administradores
+#     return {"message": "Access granted: Welcome, admin!"}
+
 @router.get('/admin-only-endpoint')
 def admin_only_endpoint(Authorize: AuthJWT = Depends()):
-    # Llama a la función require_role con el rol "admin"
-    require_role("operator", Authorize)
+    try:
+        require_role("operator", Authorize)
+    except MissingTokenError:
+        raise HTTPException(status_code=401, detail="Missing Authorization Header")
 
-    # Código del endpoint solo accesible para administradores
     return {"message": "Access granted: Welcome, admin!"}
 
 

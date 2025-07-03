@@ -111,7 +111,7 @@ const PadelNews = () => {
                     {article.description}
                   </Typography>
                   <Button size="small" color="primary" href={article.url} target="_blank" rel="noopener noreferrer">
-                    Leer más
+                    {t("readMore")}
                   </Button>
                 </CardContent>
               </Card>

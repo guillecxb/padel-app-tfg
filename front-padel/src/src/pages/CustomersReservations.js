@@ -23,6 +23,7 @@ import { renderActionsCell, renderCopyCell } from "modules/common/tables/cells";
 import { ROUTES } from 'modules/app/router';
 import { FormControlLabel, Checkbox, FormControl } from "@mui/material";
 import { InputLabel, Select, MenuItem } from "@mui/material";
+import { useCustomerDashboardTranslation } from "translations";
 
 const Booking = () => {
   const { customerId } = useParams();
@@ -31,6 +32,7 @@ const Booking = () => {
     customer_id,
   });
   const navigate = useNavigate();
+  const t = useCustomerDashboardTranslation();
 
   const [deleteReservation] = useDeleteReservationMutation();
   const [searchRows, setSearchRows] = useState([]);
@@ -85,21 +87,21 @@ const Booking = () => {
     () => [
       {
         name: "id",
-        label: "ID reservation",
+        label: t("idReservation"),
         options: {
           customBodyRender: renderCopyCell,
         },
       },
       {
         name: "court_id",
-        label: "Court number",
+        label: t("courtNumber"),
         options: {
           customBodyRender: renderCopyCell,
         },
       },
       {
         name: "reservation_time",
-        label: "Date and Time",
+        label: t("dateAndTime"),
         options: {
           customBodyRender: (value) =>
             value ? format(new Date(value), "dd/MM/yyyy HH:mm") : "No especificado",
@@ -107,14 +109,14 @@ const Booking = () => {
       },
       {
         name: "user_id",
-        label: "ID client",
+        label: t("idClient"),
         options: {
           customBodyRender: renderCopyCell,
         },
       },
       {
         name: "actions",
-        label: "Acciones",
+        label: t("actions"),
         options: {
           customBodyRender: (_value, tableMeta) => {
             const rawDate = tableMeta.rawRow.reservation_time;
@@ -122,7 +124,7 @@ const Booking = () => {
       
             return isPast ? (
               <Typography variant="body2" color="text.disabled">
-                (Reserva pasada)
+                {t("pastReservation")}
               </Typography>
             ) : (
               renderActionsCell({
@@ -166,7 +168,7 @@ const Booking = () => {
 
   return (
     <div data-testid="reservations-dashboard-page">
-      <SectionTitle title="Reservations" />
+      <SectionTitle title={t("reservationsTitle")} />
       <Paper sx={{ p: 6 }}>
         <Box
           alignItems="center"
@@ -176,7 +178,7 @@ const Booking = () => {
           width="100%"
         >
           <Typography data-testid="count" variant="h5">
-            Total reservations: {error?.status === 404 ? 0 : reservations.length}
+            {t("totalReservations")}: {error?.status === 404 ? 0 : reservations.length}
           </Typography>
           <Stack
             alignItems="center"
@@ -202,7 +204,7 @@ const Booking = () => {
                 size="large"
                 variant="contained"
               >
-                Book a Court
+                {t("bookACourt")}
               </Button>
             </Box>
           </Stack>
@@ -216,11 +218,11 @@ const Booking = () => {
         color="primary"
       />
     }
-    label="Mostrar reservas pasadas"
+    label={t("showPastReservations")}
   />
 
   <FormControl size="small" sx={{ minWidth: 200 }}>
-    <InputLabel id="sort-order-label">Ordenar por</InputLabel>
+    <InputLabel id="sort-order-label">{t("sortBy")}</InputLabel>
     <Select
       labelId="sort-order-label"
       id="sort-order"
@@ -228,8 +230,8 @@ const Booking = () => {
       label="Ordenar por"
       onChange={(e) => setSortOrder(e.target.value)}
     >
-      <MenuItem value="desc">Más recientes primero</MenuItem>
-      <MenuItem value="asc">Más antiguas primero</MenuItem>
+      <MenuItem value="desc">{t("mostRecentFirst")}</MenuItem>
+      <MenuItem value="asc">{t("oldestFirst")}</MenuItem>
     </Select>
   </FormControl>
 </Box>
@@ -246,22 +248,22 @@ const Booking = () => {
         />
         {error?.status === 404 && !isLoading && (
           <Typography sx={{ textAlign: "center", mt: 2 }}>
-            No hay reservas activas.
+            {t("noActiveReservations")}
           </Typography>
         )}
       </Paper>
 
       {/* Dialogo de confirmación */}
       <Dialog open={openDialog} onClose={handleDialogClose}>
-        <DialogTitle>Confirm Deletion</DialogTitle>
+        <DialogTitle>{t("confirmDeletionTitle")}</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            Are you sure you want to delete reservation with ID {deleteId}?
+            {t("confirmDeletionText", { id: deleteId })}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleDialogClose} disabled={isDeleting}>
-            Cancel
+            {t("cancel")}
           </Button>
           <Button
             onClick={confirmDelete}
@@ -269,7 +271,7 @@ const Booking = () => {
             disabled={isDeleting}
             startIcon={isDeleting && <CircularProgress size={20} />}
           >
-            {isDeleting ? "Deleting..." : "Delete"}
+            {isDeleting ? t("deleting") : t("delete")}
           </Button>
         </DialogActions>
       </Dialog>

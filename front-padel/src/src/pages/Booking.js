@@ -11,6 +11,8 @@ import { useCustomersQuery } from "domain/accounts/apiSlices/customersApiSlice";
 import { ROUTES } from 'modules/app/router';
 import { Collapse, IconButton } from '@mui/material';
 import { ExpandMore, ExpandLess } from '@mui/icons-material';
+import { useCustomerDashboardTranslation } from "translations";
+
 
 const Booking = () => {
   const location = useLocation();
@@ -21,6 +23,8 @@ const Booking = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [loading, setLoading] = useState(false);
   const [successDialogOpen, setSuccessDialogOpen] = useState(false);
+
+  const t = useCustomerDashboardTranslation();
 
   const { role, id: userId } = useSelector(getMe);
   const [customerId, setCustomerId] = useState(location.state?.customerId || null);
@@ -103,13 +107,13 @@ const Booking = () => {
     <LocalizationProvider dateAdapter={AdapterDateFns}>
       <Box sx={{ padding: '16px' }}>
         <Typography variant="h5" sx={{ textAlign: 'center', marginBottom: 4 }}>
-          {customerId ? `Reserva para: ${clubLocation}` : "Seleccione un club para reservar"}
+          {customerId ? t("bookingFor", { location: clubLocation }) : t("selectClubToBook")}
         </Typography>
 
         {!customerId && !loadingClubs && (
           <TextField
             select
-            label="Seleccione un club" // Usa solo el label
+            label={t("selectClubLabel")}
             value={customerId || ''}
             onChange={handleClubSelection}
             SelectProps={{
@@ -128,7 +132,7 @@ const Booking = () => {
 
         <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: 4 }}>
           <DatePicker
-            label="Fecha de reserva"
+            label={t("bookingDateLabel")}
             value={selectedDate}
             onChange={(newValue) => setSelectedDate(newValue)}
             renderInput={(params) => <TextField {...params} />}
@@ -139,7 +143,7 @@ const Booking = () => {
 
         {selectedDate && (
           <>
-            <Typography variant="h6" sx={{ marginTop: 4, textAlign: 'center' }}>Seleccione una hora</Typography>
+            <Typography variant="h6" sx={{ marginTop: 4, textAlign: 'center' }}>{t("selectTime")}</Typography>
             <Grid container spacing={2} sx={{ marginTop: 2 }}>
               {timeSlots.map((slot, index) => (
                 <Grid item xs={6} md={3} key={index}>
@@ -157,7 +161,7 @@ const Booking = () => {
 
         {selectedSlot && courts.length > 0 && (
           <>
-            <Typography variant="h6" sx={{ marginTop: 4, textAlign: 'center' }}>Seleccione una pista</Typography>
+            <Typography variant="h6" sx={{ marginTop: 4, textAlign: 'center' }}>{t("selectCourt")}</Typography>
             <Grid container spacing={2} sx={{ marginTop: 2 }}>
               {courts.map((court) => (
                 <Grid item xs={6} md={3} key={court.court_id}>
@@ -180,7 +184,7 @@ const Booking = () => {
                     onClick={() => handleCourtSelect(court.court_id)}
                   >
                     <Typography variant="h6">{court.court_name}</Typography>
-                    <Typography variant="body2">{court.available ? 'Disponible' : 'Ocupada'}</Typography>
+                    <Typography variant="body2">{court.available ? t("available") : t("occupied")}</Typography>
 
                     {court.review_count > 0 ? (
                       <>
@@ -218,7 +222,7 @@ const Booking = () => {
                               }))
                             }
                           >
-                            {expandedCourts[court.court_id] ? "Mostrar menos" : "Mostrar más"}
+                            {expandedCourts[court.court_id] ? t("showLess") : t("showMore")}
                           </Typography>
 
                           <IconButton
@@ -236,7 +240,7 @@ const Booking = () => {
                       </>
                     ) : (
                       <Typography variant="caption" sx={{ mt: 1, color: "text.secondary" }}>
-                        Aún no hay comentarios disponibles
+                        {t("noReviews")}
                       </Typography>
                     )}
                   </Box>
@@ -249,37 +253,37 @@ const Booking = () => {
         {selectedCourt && (
           <Box sx={{ marginTop: 4, textAlign: 'center' }}>
             <Button variant="contained" color="primary" onClick={handleBooking}>
-              Reservar Pista {selectedCourt}
+              {t("bookCourt", { courtId: selectedCourt })}
             </Button>
           </Box>
         )}
 
         {/* Diálogos de confirmación y éxito */}
         <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-          <DialogTitle>Confirmar Reserva</DialogTitle>
+          <DialogTitle>{t("confirmBookingTitle")}</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              ¿Estás seguro de reservar la pista {selectedCourt} para el {format(new Date(selectedDateTime), 'dd/MM/yyyy HH:mm')}?
+              {t("confirmBookingText", { courtId: selectedCourt, date: format(new Date(selectedDateTime), 'dd/MM/yyyy HH:mm')})}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => setOpenDialog(false)} color="secondary">Cancelar</Button>
+            <Button onClick={() => setOpenDialog(false)} color="secondary"> {t("cancel")}</Button>
             <Button onClick={handleConfirmReservation} color="primary" disabled={loading}>
-              {loading ? <CircularProgress size={24} /> : 'Reservar'}
+              {loading ? <CircularProgress size={24} /> : t("book")}
             </Button>
           </DialogActions>
         </Dialog>
 
         <Dialog open={successDialogOpen} onClose={goToReservations}>
-          <DialogTitle>Reserva exitosa</DialogTitle>
+          <DialogTitle>{t("bookingSuccessTitle")}</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              ¡Reserva confirmada para la pista {selectedCourt} el {format(new Date(selectedDateTime), 'dd/MM/yyyy HH:mm')}!
+              {t("bookingSuccessText", { courtId: selectedCourt, date: format(new Date(selectedDateTime), 'dd/MM/yyyy HH:mm')})}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={handleNewReservation} color="primary">Reservar otra pista</Button>
-            <Button onClick={goToReservations} color="secondary">Ir a mis reservas</Button>
+            <Button onClick={handleNewReservation} color="primary">{t("bookAnother")}</Button>
+            <Button onClick={goToReservations} color="secondary">{t("goToMyBookings")}</Button>
           </DialogActions>
         </Dialog>
       </Box>

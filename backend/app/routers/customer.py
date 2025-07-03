@@ -1,41 +1,16 @@
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
-from db.database import SessionLocal
 from models.customer import Customer
 from models.reservation import Reservation
-from pydantic import BaseModel
-from typing import List, Optional
+from schemas.customer import (
+    CustomerResponse,
+    CustomerWithCountsResponse,
+    PaginatedCustomerWithCountsResponse
+)
+from dependencies.database import get_db # Dependencia para obtener la sesión de la base de datos
+
 
 router = APIRouter()
-
-# Esquemas
-class CustomerResponse(BaseModel):
-    id: int
-    name: str
-    location: str
-    contact_email: str
-    phone: str
-
-    class Config:
-        orm_mode = True
-
-class CustomerWithCountsResponse(CustomerResponse):
-    user_count: int
-    reservation_count: int
-
-class PaginatedCustomerWithCountsResponse(BaseModel):
-    count: int
-    next_link: Optional[str]
-    previous_link: Optional[str]
-    results: List[CustomerWithCountsResponse]
-
-# Dependencia para obtener la sesión de la base de datos
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 # Endpoint de clientes con conteos de reservas
 @router.get("/customers/", response_model=PaginatedCustomerWithCountsResponse)

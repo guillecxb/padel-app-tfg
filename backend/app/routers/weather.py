@@ -1,22 +1,11 @@
 # weather.py
 from fastapi import APIRouter, HTTPException
-from pydantic import BaseModel
 from datetime import datetime
 from typing import Optional
 from services.weather_service import get_weather_for_reservation
+from schemas.weather import WeatherResponse, WeatherRequest
 
 router = APIRouter()
-
-class WeatherRequest(BaseModel):
-    latitude: float
-    longitude: float
-    date: Optional[datetime] = None  # 'date' es ahora opcional
-
-class WeatherResponse(BaseModel):
-    temp_c: float
-    condition_text: str
-    wind_kph: float
-    humidity: int
 
 @router.post("/weather/", response_model=WeatherResponse)
 def get_weather_info(weather_request: WeatherRequest):
