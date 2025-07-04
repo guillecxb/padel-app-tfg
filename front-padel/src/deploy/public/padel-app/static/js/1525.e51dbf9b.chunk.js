@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkpadel_app=self.webpackChunkpadel_app||[]).push([[1525],{21525:e=>{e.exports=JSON.parse('{"title":"Padel-Nachrichten","selectDate":"Datum ausw\xe4hlen ab","newerNews":"Neuere Nachrichten","olderNews":"\xc4ltere Nachrichten","readMore":"Mehr lesen"}')}}]);

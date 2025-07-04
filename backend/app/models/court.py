@@ -15,4 +15,4 @@ class Court(Base):
     customer_id = Column(Integer, ForeignKey("customers.id"))
     customer = relationship("Customer", back_populates="courts")
     reservations = relationship("Reservation", back_populates="court")
-
+    reviews = relationship("CourtReview", back_populates="court")

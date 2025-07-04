@@ -6,6 +6,7 @@
   "dependencies": {
     "@azure/msal-browser": "2.36.0",
     "@azure/msal-react": "1.5.7",
+    "@bigheads/core": "^0.3.3",
     "@emotion/react": "11.10.5",
     "@emotion/styled": "11.10.5",
     "@loadable/component": "5.15.3",
@@ -31,6 +32,7 @@
     "i18next-resources-to-backend": "1.1.4",
     "i18next-xhr-backend": "3.2.2",
     "lodash.clonedeep": "4.5.0",
+    "lottie-react": "^2.4.1",
     "mapbox-gl": "2.14.1",
     "maplibre-gl": "2.4.0",
     "maplibre-gl-js-amplify": "3.0.5",

@@ -9,9 +9,12 @@ import {
 import { format } from "date-fns";
 import { useAvailableCourtsQuery, useGetCustomerReservationsQuery } from "domain/service/apiSlices/bookingApiSlice";
 import { useParams } from "react-router-dom";
+import { useCustomerDashboardTranslation } from "translations";
 
 const Dashboard = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
+
+  const t = useCustomerDashboardTranslation();
 
   const { customerId } = useParams();
 
@@ -47,41 +50,47 @@ const Dashboard = () => {
   const pistasOcupadas = availableCourts.filter((pista) => !pista.available).length;
   const pistasDisponibles = availableCourts.filter((pista) => pista.available).length;
 
+  const now = new Date();
+  const limit = new Date(now.getTime() - 90 * 60 * 1000); // ahora - 1h30
+  const reservasFuturas = reservations.filter(res =>
+    new Date(res.reservation_time) >= limit
+  );
+
   return (
     <Box sx={{ padding: 4 }}>
       <Typography variant="h4" gutterBottom>
-        Dashboard - Gestión de Pistas
+        {t("dashboardTitle")}
       </Typography>
 
       <Typography variant="h6" sx={{ color: "gray", mb: 4 }}>
-        Estado actual a las {format(currentTime, "HH:mm:ss")} del {format(currentTime, "dd/MM/yyyy")}
+        {t("currentStatus", {time: format(currentTime, "HH:mm:ss"), date: format(currentTime, "dd/MM/yyyy")})}
       </Typography>
 
       {/* Resumen General */}
       <Grid container spacing={3} sx={{ mb: 4 }}>
         <Grid item xs={12} md={4}>
           <Paper sx={{ padding: 3, textAlign: "center" }}>
-            <Typography variant="h6">Pistas Ocupadas</Typography>
+            <Typography variant="h6">{t("occupiedCourts")}</Typography>
             <Typography variant="h4">{pistasOcupadas}</Typography>
           </Paper>
         </Grid>
         <Grid item xs={12} md={4}>
           <Paper sx={{ padding: 3, textAlign: "center" }}>
-            <Typography variant="h6">Pistas Disponibles</Typography>
+            <Typography variant="h6">{t("availableCourts")}</Typography>
             <Typography variant="h4">{pistasDisponibles}</Typography>
           </Paper>
         </Grid>
         <Grid item xs={12} md={4}>
           <Paper sx={{ padding: 3, textAlign: "center" }}>
-            <Typography variant="h6">Total Reservas</Typography>
-            <Typography variant="h4">{reservations.length}</Typography>
+            <Typography variant="h6">{t("totalReservations")}</Typography>
+            <Typography variant="h4">{reservasFuturas.length}</Typography>
           </Paper>
         </Grid>
       </Grid>
 
       {/* Estado de las Pistas */}
       <Typography variant="h5" sx={{ mb: 2 }}>
-        Estado de las Pistas (En este momento)
+        {t("courtsStatusTitle")}
       </Typography>
       <Grid container spacing={2}>
         {availableCourts.map((pista) => (
@@ -99,7 +108,7 @@ const Dashboard = () => {
             >
               <Typography variant="h6">{pista.court_name}</Typography>
               <Typography variant="body2">
-                {pista.available ? "Disponible" : "Ocupada"}
+                {pista.available ? t("available") : t("occupied")}
               </Typography>
             </Paper>
           </Grid>

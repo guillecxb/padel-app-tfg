@@ -10,6 +10,7 @@ import EntityForm from "modules/common/entity-form";
 import { fieldRequired } from "modules/common/validation";
 
 import { useValidationTranslation, useUsersTranslation } from "translations";
+import { Email } from "@mui/icons-material";
 
 const UserAdd = () => {
   const navigate = useNavigate();
@@ -23,6 +24,7 @@ const UserAdd = () => {
       name: Yup.string().required(fieldRequired(vt, t("validations.name"))),
       password: Yup.string().required(fieldRequired(vt, t("validations.password"))),
       role: Yup.string().required(fieldRequired(vt, t("validations.role"))),
+      email: Yup.string().email(vt("validations.field-email-invalid"))
     });
   }, [t, vt]);
 
@@ -31,6 +33,7 @@ const UserAdd = () => {
       name: "",
       password: "",
       role: "",
+      email: "",
     };
   }, []);
 
@@ -88,6 +91,15 @@ const UserAdd = () => {
                 label={t("fields.password")}
                 name="password"
                 type="password"
+              />
+              <EntityForm.TextField
+                data-testid="email"
+                fullWidth
+                id="email"
+                inputProps={{ maxLength: 255 }}
+                label={t("fields.email")}
+                name="email"
+                type="email"
               />
               <EntityForm.Select
                 data-testid="role"

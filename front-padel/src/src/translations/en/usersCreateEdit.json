@@ -18,6 +18,7 @@
     "username": "Username",
     "usernameHelper": "Must have at least 5 characters.",
     "password": "Password",
+    "email": "Email",
     "passwordHelper": "Must have at least 8 characters, an uppercase letter, a number, and a !%*#?& symbol.",
     "operator": "Operator type"
   },

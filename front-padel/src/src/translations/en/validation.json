@@ -15,6 +15,7 @@
       "field-max-length": "{{field}} must have less than {{count}} characters",
       "field-min-length": "{{field}} must have at least {{count}} characters",
       "field-integer-greater-than": "{{field}} should be at least {{limit}}",
-      "async-error": "Server error validating {{field}}: {{message}}"
+      "async-error": "Server error validating {{field}}: {{message}}",
+      "field-not-found": "{{field}} not found"
     }
   }

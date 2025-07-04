@@ -71,6 +71,22 @@ export const boookingAPiSlice = serviceApiSlice.injectEndpoints({
       providesTags: [SERVICE_TAGS.Reservations],
     }),
 
+    // useCreateReviewMutation
+    createReview: builder.mutation({
+      query: ({ court_id, user_id, reservation_id, rating, comment }) => ({
+        url: `/reviews/`,
+        method: "POST",
+        body: {
+          court_id,
+          user_id,
+          reservation_id,
+          rating,
+          comment
+        },
+      }),
+      invalidatesTags: [SERVICE_TAGS.Reservations],
+    }),
+
   }),
 });
 
@@ -82,4 +98,5 @@ export const {
   useGetCustomerReservationsQuery,
   useGetCustomerReservationsByDateQuery,
   useGetReservationCountByCourtQuery,
+  useCreateReviewMutation,
 } = boookingAPiSlice;

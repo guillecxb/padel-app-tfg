@@ -11,6 +11,7 @@ import { getMe } from "domain/accounts/slices/authSlice";
 import { RouterLayout, RequireAuth, ROUTES } from "modules/app/router";
 import { RedirectWhenLoggedIn } from "modules/app/router/RedirectWhenLoggedIn";
 import { AsCustomerLayout } from "modules/app/router/AsCustomerLayout";
+import { Reviews } from "@mui/icons-material";
 
 const Login = lazy(() => import("pages/Login"));
 const CustomerDashboard = lazy(() => import("pages/CustomerDashboard"));
@@ -37,7 +38,7 @@ const OperatorEditUser = lazy(() => import("pages/UserEdit"));
 const ReservationsCustomer = lazy(() => import("pages/CustomersReservations"));
 const OperatorBooking = lazy(() => import("pages/OperatorBooking"));
 const CustomerDashboardForOperator = lazy(() => import("pages/CustomerDashboardForOperator"));
-
+const CreateReview = lazy(() => import("pages/Review"));
 
 
 
@@ -83,6 +84,7 @@ const App = () => {
           <Route element={withSuspensor(<MembersArea />)} path={ROUTES.membersArea} />
           <Route element={withSuspensor(<AboutUs />)} path={ROUTES.aboutUs} />
           <Route element={withSuspensor(<Booking />)} path={ROUTES.booking} />
+          <Route element={withSuspensor(<CreateReview />)} path={ROUTES.review} />
         </Route>
         {/* operator */}
         <Route element={<RequireAuth roles={["operator"]} />}>

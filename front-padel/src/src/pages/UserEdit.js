@@ -19,6 +19,7 @@ const UserEdit = () => {
     return {
       name: "",
       password: "",
+      email: "",
     };
   }, []);
 
@@ -27,6 +28,7 @@ const UserEdit = () => {
       Yup.object().shape({
         name: Yup.string().required(t("validations.nameRequired")),
         password: Yup.string().required(t("validations.passwordRequired")),
+        email: Yup.string().email(t("validations.invalidEmail")),
       }),
     [t]
   );
@@ -81,6 +83,13 @@ const UserEdit = () => {
                   data-testid="password"
                   fullWidth
                   type="password"
+                />
+                <EntityForm.TextField
+                  name="email"
+                  label={t("fields.email")}
+                  data-testid="email"
+                  fullWidth
+                  type="email"
                 />
               </Stack>
             </EntityForm.LayoutBlock>

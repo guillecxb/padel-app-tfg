@@ -1,63 +1,25 @@
-from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi import APIRouter, Depends, HTTPException, Query, BackgroundTasks
 from sqlalchemy.orm import Session
 from sqlalchemy import and_, func
 from services.weather_service import get_weather_for_reservation
-from db.database import SessionLocal
 from models.reservation import Reservation
 from models.user import User
 from models.court import Court
 from models.customer import Customer
-from pydantic import BaseModel
 from datetime import datetime, timedelta
 from typing import List, Optional
+from services.email_service import send_email
+from models.review import CourtReview
+from schemas.reservation import ReservationResponse, ReservationCreate, WeatherInfo, CourtAvailabilityResponse, ReservationCountByCourtResponse
+
+
+from dependencies.database import get_db # Dependencia para obtener la sesión de la base de datos
+
 
 router = APIRouter()
 
-class ReservationCreate(BaseModel):
-    user_id: int
-    customer_id: int  # Ahora el customer_id se pasa explícitamente
-    court_id: int
-    reservation_time: datetime
 
-class WeatherInfo(BaseModel):
-    temp_c: Optional[float]
-    condition_text: Optional[str]
-    wind_kph: Optional[float]
-    humidity: Optional[int]
 
-class ReservationResponse(BaseModel):
-    id: int
-    user_id: int
-    court_id: int
-    reservation_time: datetime
-    customer_id: int
-    weather: Optional[WeatherInfo] = None
-
-    class Config:
-        orm_mode = True
-
-class CourtAvailabilityResponse(BaseModel):
-    court_id: int
-    court_name: str
-    available: bool
-
-    class Config:
-        orm_mode = True
-
-class ReservationCountByCourtResponse(BaseModel):
-    court_id: int
-    court_name: str
-    reservation_count: int
-
-    class Config:
-        orm_mode = True
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 def check_reservation_availability(db: Session, court_id: int, start_time: datetime, end_time: datetime) -> bool:
     overlapping_reservations = db.query(Reservation).filter(
@@ -70,7 +32,7 @@ def check_reservation_availability(db: Session, court_id: int, start_time: datet
     return len(overlapping_reservations) == 0
 
 @router.post("/reservations/", response_model=ReservationResponse)
-def create_reservation(reservation: ReservationCreate, db: Session = Depends(get_db)):
+def create_reservation(background_tasks: BackgroundTasks, reservation: ReservationCreate, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.id == reservation.user_id).first()
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -94,16 +56,46 @@ def create_reservation(reservation: ReservationCreate, db: Session = Depends(get
 
     if not check_reservation_availability(db, reservation.court_id, start_time, end_time):
         raise HTTPException(status_code=400, detail="The court is already reserved for the selected time slot.")
+    
+    # Obtener la previsión del tiempo
+    weather_data = get_weather_for_reservation(
+        court.latitude, court.longitude, reservation.reservation_time
+    )
+
+    print(f"🌦️ Weather data: {weather_data}")
+
+    # Inicializar variables por si falla la API
+    temp_c = condition_text = wind_kph = humidity = None
+
+    if weather_data:
+        temp_c = weather_data.get("temp_c")
+        condition_text = weather_data.get("condition", {}).get("text")
+        wind_kph = weather_data.get("wind_kph")
+        humidity = weather_data.get("humidity")
+
 
     db_reservation = Reservation(
         user_id=reservation.user_id,
         court_id=reservation.court_id,
         reservation_time=reservation.reservation_time,
-        customer_id=customer_id
+        customer_id=customer_id,
+        weather_temp_c=temp_c,
+        weather_condition_text=condition_text,
+        weather_wind_kph=wind_kph,
+        weather_humidity=humidity
     )
     db.add(db_reservation)
     db.commit()
     db.refresh(db_reservation)
+
+    background_tasks.add_task(
+        send_email,
+        user.email,
+        court.name,
+        customer.name,
+        reservation.reservation_time.strftime("%d/%m/%Y %H:%M")
+    )
+
     return db_reservation
 
 @router.get("/users/{user_id}/reservations/", response_model=List[ReservationResponse])
@@ -163,13 +155,35 @@ def get_available_courts(customer_id: int, date: datetime, db: Session = Depends
     if not courts:
         raise HTTPException(status_code=404, detail="No courts found for the specified customer")
 
+    court_ids = [court.court_id for court in courts]
+    reviews_by_court = (
+        db.query(CourtReview)
+        .filter(CourtReview.court_id.in_(court_ids))
+        .all()
+    )
+
+
+    reviews_map = {}
+    for review in reviews_by_court:
+        reviews_map.setdefault(review.court_id, []).append(review)
+
     available_courts = []
     for court in courts:
         is_available = check_reservation_availability(db, court.court_id, start_time, end_time)
+        court_reviews = reviews_map.get(court.court_id, [])
+
+        if court_reviews:
+            avg_rating = sum(r.rating for r in court_reviews) / len(court_reviews)
+        else:
+            avg_rating = None
+
         available_courts.append(CourtAvailabilityResponse(
             court_id=court.court_id,
             court_name=court.name,
-            available=is_available
+            available=is_available,
+            average_rating=avg_rating,
+            review_count=len(court_reviews),
+            reviews=court_reviews
         ))
 
     return available_courts

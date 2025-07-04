@@ -23,9 +23,9 @@ export const RequireAuth = ({ roles = [] }) => {
   useEffect(() => {
     if (isError || (role && !Object.values(ROLES).includes(role))) {
       dispatch(logOut());
-      navigate(ROUTES.login);
+      navigate(ROUTES.login, { state: { from: location }, replace: true });
     }
-  }, [dispatch, isError, navigate, role]);
+  }, [dispatch, isError, navigate, role, location]);
 
   if (isLoading) {
     return <LinearProgress />;

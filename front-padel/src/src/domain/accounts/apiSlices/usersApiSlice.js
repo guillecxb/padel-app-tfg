@@ -52,13 +52,13 @@ export const usersApiSlice = accountsApiSlice.injectEndpoints({
     }),
 
     createUser: builder.mutation({
-      query: ({ name, password, role }) => ({
+      query: ({ name, password, role, email }) => ({
         url: '/user/create',
         method: "POST",
         headers: {
           'Content-Type': 'application/json',
         },
-        body: { name, password, role },
+        body: { name, password, role, email },
       }),
       invalidatesTags: [ACCOUNTS_TAGS.Users],
     }),
@@ -223,13 +223,13 @@ export const usersApiSlice = accountsApiSlice.injectEndpoints({
 
     // useUpdateUserByIdMutation
     updateUserById: builder.mutation({
-      query: ({ userId, name, password }) => ({
+      query: ({ userId, name, password, email }) => ({
         url: `/user/${userId}`,
         method: "PUT",
         headers: {
           'Content-Type': 'application/json',
         },
-        body: { name, password },
+        body: { name, password, email },
       }),
       invalidatesTags: [ACCOUNTS_TAGS.Users],
     }),

@@ -5,9 +5,8 @@ from fastapi import Request
 from datetime import timedelta
 from pydantic import BaseSettings
 from sqlalchemy.orm import Session
-from fastapi_jwt_auth.exceptions import JWTDecodeError
+from fastapi_jwt_auth.exceptions import JWTDecodeError, MissingTokenError
 from typing import List
-from db.database import SessionLocal
 from models.user import User
 from schemas.user import UserResponseSchema, UserCreateSchema, UserListResponseSchema, UserResponseSchema2, UserUpdateSchema
 import logging 
@@ -15,6 +14,10 @@ from services.auth_utils import require_role
 from sqlalchemy import func, and_
 from datetime import datetime
 from models.reservation import Reservation
+from zoneinfo import ZoneInfo
+from dependencies.auth import jwt_required
+
+from dependencies.database import get_db # Dependencia para obtener la sesión de la base de datos
 
 router = APIRouter()
 
@@ -24,13 +27,6 @@ class Settings(BaseSettings):
 @AuthJWT.load_config
 def get_config():
     return Settings()
-
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
 
 @router.post('/login')
 def login(name: str = Form(...), password: str = Form(...), db: Session = Depends(get_db), Authorize: AuthJWT = Depends()):
@@ -134,7 +130,8 @@ def auth_me(Authorize: AuthJWT = Depends()):
 
 @router.post('/user', response_model=UserResponseSchema)
 def create_user(user: UserCreateSchema, db: Session = Depends(get_db)):
-    db_user = User(name=user.name, password=user.password)
+    # db_user = User(name=user.name, password=user.password)
+    db_user = User(name=user.name, password=user.password, email=user.email)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -166,6 +163,7 @@ def get_user(user_id: str, db: Session = Depends(get_db), Authorize: AuthJWT = D
     return {
         "id": user.id,
         "name": user.name,
+        "email": user.email,
         "role": user.role,
         "ob_id": 1,
         "service_vendor_id": None,
@@ -240,27 +238,49 @@ def get_me(Authorize: AuthJWT = Depends()):
     }
 
 # Endpointde prueba protegido para operadores
+# @router.get('/protected-endpoint')
+# def protected_endpoint(Authorize: AuthJWT = Depends()):
+#     # Requiere que el usuario esté autenticado
+#     Authorize.jwt_required()
+
+#     # Obtiene los claims del JWT, incluyendo el rol
+#     claims = Authorize.get_raw_jwt()
+#     user_role = claims["role"]
+
+#     # Verifica el rol del usuario
+#     if user_role != "operator":
+#         raise HTTPException(status_code=403, detail="Access forbidden: Admins only")
+
+#     return {"message": "Welcome, admin!"}
+
 @router.get('/protected-endpoint')
-def protected_endpoint(Authorize: AuthJWT = Depends()):
-    # Requiere que el usuario esté autenticado
-    Authorize.jwt_required()
-
-    # Obtiene los claims del JWT, incluyendo el rol
+def protected_endpoint(
+    _: None = Depends(jwt_required),  # Verifica token
+    Authorize: AuthJWT = Depends()
+):
     claims = Authorize.get_raw_jwt()
-    user_role = claims["role"]
+    user_role = claims.get("role")
 
-    # Verifica el rol del usuario
     if user_role != "operator":
         raise HTTPException(status_code=403, detail="Access forbidden: Admins only")
 
     return {"message": "Welcome, admin!"}
 
+# @router.get('/admin-only-endpoint')
+# def admin_only_endpoint(Authorize: AuthJWT = Depends()):
+#     # Llama a la función require_role con el rol "admin"
+#     require_role("operator", Authorize)
+
+#     # Código del endpoint solo accesible para administradores
+#     return {"message": "Access granted: Welcome, admin!"}
+
 @router.get('/admin-only-endpoint')
 def admin_only_endpoint(Authorize: AuthJWT = Depends()):
-    # Llama a la función require_role con el rol "admin"
-    require_role("operator", Authorize)
+    try:
+        require_role("operator", Authorize)
+    except MissingTokenError:
+        raise HTTPException(status_code=401, detail="Missing Authorization Header")
 
-    # Código del endpoint solo accesible para administradores
     return {"message": "Access granted: Welcome, admin!"}
 
 
@@ -270,11 +290,12 @@ def get_users(db: Session = Depends(get_db)):
     users = db.query(
         User.id,
         User.name,
+        User.email,
         User.role,
         func.count(Reservation.id).label("active_reservations")
     ).outerjoin(Reservation, and_(
         Reservation.user_id == User.id,
-        Reservation.reservation_time > datetime.utcnow()  # Considera solo reservas futuras
+        Reservation.reservation_time > datetime.now(ZoneInfo("Europe/Madrid")) # Considera solo reservas futuras
     )).group_by(User.id).all()
 
     # Convierte los resultados en el formato esperado por el esquema `UserListResponseSchema`
@@ -282,6 +303,7 @@ def get_users(db: Session = Depends(get_db)):
         UserResponseSchema2(
             id=user.id,
             name=user.name,
+            email=user.email,
             role=user.role,
             active_reservations=user.active_reservations
         )
@@ -292,53 +314,6 @@ def get_users(db: Session = Depends(get_db)):
         count=len(results),
         results=results
     )
-
-
-# @router.put('/user/{user_id}', response_model=UserResponseSchema2)
-# def update_user(
-#     user_id: int,
-#     user_update: UserUpdateSchema,
-#     db: Session = Depends(get_db),
-#     Authorize: AuthJWT = Depends()
-# ):
-#     # Requiere que el usuario esté autenticado
-#     Authorize.jwt_required()
-
-#     # Obtiene el ID del usuario autenticado
-#     current_user_id = int(Authorize.get_jwt_subject())
-
-#     # Obtiene el usuario autenticado de la base de datos
-#     current_user = db.query(User).filter(User.id == current_user_id).first()
-
-#     # Verifica permisos: el usuario puede editar si es el mismo, un "operator", o el "superadmin" con ID 1
-#     if current_user_id != user_id and current_user.role != "operator" and current_user_id != 1:
-#         raise HTTPException(status_code=403, detail="You do not have permission to edit this user")
-
-#     # Obtiene el usuario a actualizar de la base de datos
-#     user_to_update = db.query(User).filter(User.id == user_id).first()
-#     if not user_to_update:
-#         raise HTTPException(status_code=404, detail="User not found")
-
-#     # Actualiza los campos si se proporcionaron en la solicitud
-#     if user_update.name is not None:
-#         user_to_update.name = user_update.name
-#     if user_update.password is not None:
-#         user_to_update.password = user_update.password
-
-#     db.commit()
-#     db.refresh(user_to_update)
-
-#     # Devuelve la respuesta con el esquema `UserResponseSchema2`
-#     return UserResponseSchema2(
-#         id=user_to_update.id,
-#         name=user_to_update.name,
-#         role=user_to_update.role,
-#         active_reservations=db.query(func.count(Reservation.id))
-#                               .filter(Reservation.user_id == user_to_update.id,
-#                                       Reservation.reservation_time > datetime.utcnow())
-#                               .scalar()
-#     )
-
 
 
 @router.put('/user/{user_id}', response_model=UserResponseSchema2)
@@ -371,6 +346,8 @@ def update_user(
         user_to_update.name = user_update.name
     if user_update.password is not None:
         user_to_update.password = user_update.password
+    if user_update.email is not None:
+        user_to_update.email = user_update.email
 
     db.commit()
     db.refresh(user_to_update)
@@ -379,10 +356,11 @@ def update_user(
     return UserResponseSchema2(
         id=user_to_update.id,
         name=user_to_update.name,
+        email=user_to_update.email,
         role=user_to_update.role,
         active_reservations=db.query(func.count(Reservation.id))
                               .filter(Reservation.user_id == user_to_update.id,
-                                      Reservation.reservation_time > datetime.utcnow())
+                                      Reservation.reservation_time > datetime.now(ZoneInfo("Europe/Madrid")))
                               .scalar()
     )
 
@@ -400,7 +378,7 @@ def create_user_test(
     print("Datos recibidos:", user.dict())
 
     # Crea el nuevo usuario con el rol especificado
-    db_user = User(name=user.name, password=user.password, role=user.role)
+    db_user = User(name=user.name, password=user.password, role=user.role, email=user.email)
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
@@ -409,6 +387,7 @@ def create_user_test(
     return UserResponseSchema2(
         id=0,  # ID ficticio ya que no estamos interactuando con la base de datos
         name=user.name,
+        email=user.email,
         role=user.role,
         active_reservations=0  # Ficticio para cumplir con el esquema
     )

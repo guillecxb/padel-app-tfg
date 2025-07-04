@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 import { Box, Typography, useTheme, styled } from "@mui/material";
 
-import { useTablesTranslation } from "translations";
+import { useCustomerDashboardTranslation } from "translations";
 
 const Select = styled("select")`
   color: ${({ palette }) => palette.text.primary};
@@ -15,7 +15,7 @@ const Select = styled("select")`
 
 const RowsPerPage = ({ rowsPerPageOptions = [], onChange }) => {
   const { palette } = useTheme();
-  const t = useTablesTranslation();
+  const t = useCustomerDashboardTranslation();
 
   const handleChange = (e) => onChange(parseInt(e.target.value));
 
